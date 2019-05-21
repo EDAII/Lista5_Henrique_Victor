@@ -1,3 +1,5 @@
+from nodes import RBNode
+
 class RB(object):
 
     __slots__ = ['root']
