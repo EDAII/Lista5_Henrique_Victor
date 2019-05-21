@@ -4,7 +4,8 @@ class Filme(object):
 
     def __init__(self, titulo, ano, bilheteria, diretor, pais, duracao):
         self.titulo = titulo
-        self.parent = parent
-        self.left = None 
-        self.right = None
-        self.height = 0
+        self.ano = ano
+        self.bilheteria = bilheteria 
+        self.diretor = diretor
+        self.pais = pais
+        self.duracao = duracao

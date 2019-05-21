@@ -12,7 +12,11 @@ class AVLNode(object):
 
 class RBNode(object):
 
-    __slots__ = []
+    __slots__ = ['key', 'color', 'left', 'right', 'parent']
 
-    def __init__():
-        
+    def __init__(key, color, parent):
+        self.key = key
+        self.parent = parent
+        self.left = None 
+        self.right = None
+        self.color = color       
