@@ -1,5 +1,4 @@
-from node import Node
-from graphviz import Graph
+from nodes import AVLNode
 
 class AVL(object):
 
@@ -28,7 +27,7 @@ class AVL(object):
     
 
     def insert(self, k):
-        new = Node(None, k)
+        new = AVLNode(None, k)
         node = self.root
         if node is None:
             self.root = new

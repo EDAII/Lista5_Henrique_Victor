@@ -1,4 +1,4 @@
-class Node(object):
+class AVLNode(object):
 
     __slots__ = ['key', 'parent', 'left', 'right', 'height']
 
@@ -8,3 +8,11 @@ class Node(object):
         self.left = None 
         self.right = None
         self.height = 0
+
+
+class RBNode(object):
+
+    __slots__ = []
+
+    def __init__():
+        
