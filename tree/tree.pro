@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = Chat
+TARGET = tree
 INCLUDEPATH += .
 
 QT = core gui

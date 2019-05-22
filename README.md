@@ -8,25 +8,31 @@
 ### Instalações necessárias
 - No teminal, digite os seguinte comando para instalar as dependências:
   ```bash
-    $ pip3 install -r requirements.txt
-    $ sudo apt-get install python3-tk
-    $ sudo apt-get install graphviz
+    $ sudo apt-get install build-essential
+    $ sudo apt-get install qt5-default
   ```
 
 
 ### Instruções de uso
 
-- No terminal, vá até o diretório do exercício, que contém, além de arquivos como o README, a pasta "src"
+- No terminal, vá até o diretório do exercício, que contém, além de arquivos como o README, a pasta "tree"
 - Digite o seguinte comando:
 
   ```bash
-    $ cd src
+    $ cd tree
+    $ qmake
+  ```
+
+  - Para compilar o código, digite:
+
+  ```bash
+    $ make
   ```
 
 - Para executar o código, digite:
 
   ```bash
-    $ python3 main.py
+    $ ./tree
   ```
 
 ### Detalhes da Lista 5
