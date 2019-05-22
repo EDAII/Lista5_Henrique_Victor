@@ -10,6 +10,10 @@ Window::Window(QWidget *parent) : QWidget(parent) {
     QFont buttonFont("Times", 20);
     QFont labelFont("Times", 20, QFont::Bold);
 
+    // TO-DO:
+    //   - tela = GridLayout
+    //   - Horizontal = 0(AVL), 1(Geral), 2(RB)
+    //   - Vertical = 0(label AVL e RB), 1 a 5(Botões), 6(label Geral), 7 a ?(Resto botões)
 
     QHBoxLayout *tela = new QHBoxLayout(this);
     QVBoxLayout *grid_avl = new QVBoxLayout();
