@@ -5,6 +5,7 @@
 #include "avltree.h"
 #include "rbtree.h"
 #include "filme.h"
+#include "dados.h"
 
 class Window : public QWidget {
 public:
