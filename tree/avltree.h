@@ -2,8 +2,7 @@
 #define AVLTREE_H
 
 
-class AVLTree
-{
+class AVLTree {
 public:
     AVLTree();
 };

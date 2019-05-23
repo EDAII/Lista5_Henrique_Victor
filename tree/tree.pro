@@ -7,7 +7,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 HEADERS += window.h \
     avltree.h \
-    rbtree.h
+    rbtree.h \
+    filme.h
 SOURCES += main.cpp window.cpp \
     avltree.cpp \
-    rbtree.cpp
+    rbtree.cpp \
+    filme.cpp

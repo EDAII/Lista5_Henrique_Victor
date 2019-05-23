@@ -2,8 +2,7 @@
 #define RBTREE_H
 
 
-class RBTree
-{
+class RBTree {
 public:
     RBTree();
 };
