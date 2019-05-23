@@ -54,6 +54,12 @@ Window::Window(QWidget *parent) : QWidget(parent) {
     connect(AVL_data, &QPushButton::clicked, this, &Window::data_avl);
     arvores->addWidget(AVL_data, 5, 0);
 
+    QPushButton *print_AVL = new QPushButton("Mostrar Árvore", this);
+    print_AVL->setFixedWidth(button_size);
+    print_AVL->setFont(buttonFont);
+    connect(print_AVL, &QPushButton::clicked, this, &Window::print_avl);
+    arvores->addWidget(print_AVL, 6, 0);
+
     /*
      *                        ÁRVORE RED-BLACK
      */
@@ -93,6 +99,12 @@ Window::Window(QWidget *parent) : QWidget(parent) {
     RB_data->setFont(buttonFont);
     connect(RB_data, &QPushButton::clicked, this, &Window::data_rb);
     arvores->addWidget(RB_data, 5, 1);
+
+    QPushButton *print_RB = new QPushButton("Mostrar Árvore", this);
+    print_RB->setFixedWidth(button_size);
+    print_RB->setFont(buttonFont);
+    connect(print_RB, &QPushButton::clicked, this, &Window::print_rb);
+    arvores->addWidget(print_RB, 6, 1);
 
     /*
      *                        GERAL
@@ -170,6 +182,14 @@ void Window::data_avl() {
 }
 
 void Window::data_rb() {
+
+}
+
+void Window::print_avl() {
+
+}
+
+void Window::print_rb() {
 
 }
 

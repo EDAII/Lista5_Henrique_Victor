@@ -1,6 +1,6 @@
 #include "dados.h"
 
-const char *filmes[] = {
+const char *const filmes[] = {
     "Os Vingadores",
     "Os Vingadores - A Era de Ultron",
     "Os Vingadores - Ultimato",
@@ -9,12 +9,12 @@ const char *filmes[] = {
     "Capitão América - Guerra Civil",
     "Capitã Marvel",
     "Pantera Negra",
-    "Guardiões da Galaxia - Vol. 1",
+    "Guardiões da Galaxia",
     "Guardiões da Galaxia - Vol. 2",
     "Homem de Ferro",
     "Homem de Ferro 2",
     "Homem de Ferro 3",
-    "Batman V. Superman",
+    "Batman Vs. Superman",
     "Liga da Justiça",
     "Mulher Maravilha",
     "It - A Coisa",
@@ -97,7 +97,7 @@ const char *filmes[] = {
     "Wolverine: Imortal",
     "Maze Runner: Correr ou Morrer",
     "Maze Runner: Prova de Fogo",
-    "Maze Runner: A Cura Morta",
+    "Maze Runner: A Cura Mortal",
     "A Múmia",
     "O Exorcista",
     "O Exorcismo de Emily Rose",
@@ -684,7 +684,7 @@ const char *filmes[] = {
     "Um jeito Especial com Cavalos",
 }; // FILMES
 
-const char *diretores[] = {
+const char *const diretores[] = {
     "Alfred Hitchcock",
     "Orson Welles",
     "John Ford",
@@ -758,7 +758,7 @@ const char *diretores[] = {
     "Guilhermo Del Toro",
 }; // DIRETORES
 
-const char *paises[] = {
+const char *const paises[] = {
     "Andorra",
     "Emirados Árabes Unidos",
     "Afeganistão",

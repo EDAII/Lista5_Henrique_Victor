@@ -26,6 +26,8 @@ private slots:
     void search_rb();
     void data_avl();
     void data_rb();
+    void print_avl();
+    void print_rb();
     void comp_perf();
     void comp_ins();
     void comp_rmv();
