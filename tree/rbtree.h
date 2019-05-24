@@ -10,6 +10,7 @@ public:
     void insert(const Filme& info);
     void erase(const Filme& info);
     void clean();
+    Filme search(const char* titulo);
 
 private:
     struct Node {
@@ -34,6 +35,7 @@ private:
     void erase(Node *N);
     void rebalancing(Node *P, Node *S, Node *N);
     void clean(Node *node);
+    Filme search_filme(Node *node, string titulo);
 };
 
 #endif // RBTREE_H

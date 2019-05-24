@@ -44,6 +44,8 @@ private slots:
     void remove_rb() { tela_titulo(1); }
     void search_avl() { tela_titulo(2); }
     void search_rb() { tela_titulo(3); }
+    void buscar_filme_avl();
+    void buscar_filme_rb();
     void tela_titulo(int opcao);
     void data_avl();
     void data_rb();
@@ -55,6 +57,7 @@ private slots:
     void comp_search();
     void get_quantidade() { quantidade = campo_quantidade->text().toInt(); }
     void limpar_todos_campos();
+    void mostrar_filme_encontrado(const Filme& filme);
 };
 
 #endif // WINDOW_H

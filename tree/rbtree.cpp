@@ -236,3 +236,19 @@ void RBTree::clean(Node *node) {
         delete node;
     }
 }
+
+Filme RBTree::search(const char* titulo) {
+    string aux(titulo);
+    return search_filme(root, aux);
+}
+
+Filme RBTree::search_filme(Node *node, string titulo) {
+    if (node == nullptr)
+        return Filme("NULL", -1, 0, "NULL", "NULL", 0);
+
+    if(node->info.get_titulo() == titulo)
+        return node->info;
+
+    return titulo < node->info.get_titulo() ? search_filme(node->left, titulo) :
+        search_filme(node->right, titulo);
+}

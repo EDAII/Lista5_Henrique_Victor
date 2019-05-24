@@ -7,6 +7,7 @@
 #include <QGroupBox>
 #include <QFormLayout>
 #include <QValidator>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -411,12 +412,12 @@ void Window::tela_titulo(int opcao) {
     else if(opcao == 2) { // Buscar na AVL
         new_window->setWindowTitle("Buscar Filme na AVL");
         button->setText("Buscar");
-        connect(button, &QPushButton::clicked, this, &Window::gerar_rb_aleat);
+        connect(button, &QPushButton::clicked, this, &Window::buscar_filme_avl);
     }
     else { // Buscar na RB
         new_window->setWindowTitle("Buscar Filme na Red-Black");
         button->setText("Buscar");
-        connect(button, &QPushButton::clicked, this, &Window::gerar_rb_aleat);
+        connect(button, &QPushButton::clicked, this, &Window::buscar_filme_rb);
     }
 
     tela->addWidget(label);
@@ -424,6 +425,105 @@ void Window::tela_titulo(int opcao) {
     tela->addWidget(button);
     tela->addWidget(alert);
     new_window->setLayout(tela);
+    new_window->show();
+
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
+}
+
+void Window::buscar_filme_avl() {
+    QFont labelFont("Times", 20, QFont::Bold);
+}
+
+void Window::buscar_filme_rb() {
+    Filme filme = rb.search(campo_titulo->text().toStdString().c_str());
+    if(filme.get_ano() == -1) // Filme não encontrado
+        QMessageBox::information(new_window, tr("Aviso"), tr("O filme não foi encontrado"));
+    else {
+        new_window->close();
+        mostrar_filme_encontrado(filme);
+    }
+}
+
+void Window::mostrar_filme_encontrado(const Filme& filme) {
+    new_window = new QWidget(nullptr);
+
+    QFont labelFont("Times", 20, QFont::Bold);
+    int maximum_label_height = 30;
+
+    QGridLayout *layout = new QGridLayout();
+
+    QLabel *label_titulo = new QLabel("Título: ");
+    QLabel *label_ano = new QLabel("Ano: ");
+    QLabel *label_bilheteria = new QLabel("Bilheteria: ");
+    QLabel *label_diretor = new QLabel("Diretor: ");
+    QLabel *label_pais = new QLabel("País: ");
+    QLabel *label_duracao = new QLabel("Duração: ");
+
+    QLabel *filme_titulo = new QLabel(QString::fromStdString(filme.get_titulo()));
+    QLabel *filme_ano = new QLabel(QString::number(filme.get_ano()));
+    QLabel *filme_bilheteria = new QLabel("U$ " + QString::number(filme.get_bilheteria()));
+    QLabel *filme_diretor = new QLabel(QString::fromStdString(filme.get_diretor()));
+    QLabel *filme_pais = new QLabel(QString::fromStdString(filme.get_pais()));
+    QLabel *filme_duracao = new QLabel(QString::number(filme.get_duracao()) + " minutos");
+
+    label_titulo->setMaximumHeight(maximum_label_height);
+    label_titulo->setFont(labelFont);
+    label_ano->setMaximumHeight(maximum_label_height);
+    label_ano->setFont(labelFont);
+    label_bilheteria->setMaximumHeight(maximum_label_height);
+    label_bilheteria->setFont(labelFont);
+    label_diretor->setMaximumHeight(maximum_label_height);
+    label_diretor->setFont(labelFont);
+    label_pais->setMaximumHeight(maximum_label_height);
+    label_pais->setFont(labelFont);
+    label_duracao->setMaximumHeight(maximum_label_height);
+    label_duracao->setFont(labelFont);
+
+    filme_titulo->setMaximumHeight(maximum_label_height);
+    filme_titulo->setFont(labelFont);
+    filme_ano->setMaximumHeight(maximum_label_height);
+    filme_ano->setFont(labelFont);
+    filme_bilheteria->setMaximumHeight(maximum_label_height);
+    filme_bilheteria->setFont(labelFont);
+    filme_diretor->setMaximumHeight(maximum_label_height);
+    filme_diretor->setFont(labelFont);
+    filme_pais->setMaximumHeight(maximum_label_height);
+    filme_pais->setFont(labelFont);
+    filme_duracao->setMaximumHeight(maximum_label_height);
+    filme_duracao->setFont(labelFont);
+
+    label_titulo->setAlignment(Qt::AlignRight);
+    label_ano->setAlignment(Qt::AlignRight);
+    label_bilheteria->setAlignment(Qt::AlignRight);
+    label_diretor->setAlignment(Qt::AlignRight);
+    label_pais->setAlignment(Qt::AlignRight);
+    label_duracao->setAlignment(Qt::AlignRight);
+
+    layout->addWidget(label_titulo, 0, 0);
+    layout->addWidget(label_ano, 1, 0);
+    layout->addWidget(label_bilheteria, 2, 0);
+    layout->addWidget(label_diretor, 3, 0);
+    layout->addWidget(label_pais, 4, 0);
+    layout->addWidget(label_duracao, 5, 0);
+
+    filme_titulo->setAlignment(Qt::AlignLeft);
+    filme_ano->setAlignment(Qt::AlignLeft);
+    filme_bilheteria->setAlignment(Qt::AlignLeft);
+    filme_diretor->setAlignment(Qt::AlignLeft);
+    filme_pais->setAlignment(Qt::AlignLeft);
+    filme_duracao->setAlignment(Qt::AlignLeft);
+
+    layout->addWidget(filme_titulo, 0, 1);
+    layout->addWidget(filme_ano, 1, 1);
+    layout->addWidget(filme_bilheteria, 2, 1);
+    layout->addWidget(filme_diretor, 3, 1);
+    layout->addWidget(filme_pais, 4, 1);
+    layout->addWidget(filme_duracao, 5, 1);
+
+    new_window->setLayout(layout);
+    new_window->setFixedSize(900, 400);
     new_window->show();
 
     QEventLoop loop;
