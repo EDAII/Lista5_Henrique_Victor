@@ -9,6 +9,7 @@ public:
     RBTree() : root(nullptr) {}
     void insert(const Filme& info);
     void erase(const Filme& info);
+    void clean();
 
 private:
     struct Node {
@@ -32,6 +33,7 @@ private:
     void swap_nodes(Node *N, Node *C);
     void erase(Node *N);
     void rebalancing(Node *P, Node *S, Node *N);
+    void clean(Node *node);
 };
 
 #endif // RBTREE_H

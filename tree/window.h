@@ -7,6 +7,8 @@
 #include "rbtree.h"
 #include "filme.h"
 #include "dados.h"
+#include <QLineEdit>
+#include <QLabel>
 
 class Window : public QWidget {
 public:
@@ -17,19 +19,32 @@ private:
     RBTree rb;
     int quantidade;
     QProgressBar *progressBar;
+    QLineEdit *campo_quantidade;
+    QLineEdit *campo_titulo;
+    QLineEdit *campo_ano;
+    QLineEdit *campo_bilheteria;
+    QLineEdit *campo_diretor;
+    QLineEdit *campo_pais;
+    QLineEdit *campo_duracao;
+    QLabel *alert;
+    QWidget *new_window;
 
 private slots:
-    void random_avl();
-    void random_rb();
+    void random_avl() { random_tree(0); }
+    void random_rb() { random_tree(1); }
     void random_tree(int opcao);
     void gerar_avl_aleat();
     void gerar_rb_aleat();
-    void insert_avl();
-    void insert_rb();
-    void remove_avl();
-    void remove_rb();
-    void search_avl();
-    void search_rb();
+    void insert_avl() { insert(0); }
+    void insert_rb() { insert(1); }
+    void insert(int opcao);
+    void inserir_filme_avl();
+    void inserir_filme_rb();
+    void remove_avl() { tela_titulo(0); }
+    void remove_rb() { tela_titulo(1); }
+    void search_avl() { tela_titulo(2); }
+    void search_rb() { tela_titulo(3); }
+    void tela_titulo(int opcao);
     void data_avl();
     void data_rb();
     void print_avl();
@@ -38,6 +53,8 @@ private slots:
     void comp_ins();
     void comp_rmv();
     void comp_search();
+    void get_quantidade() { quantidade = campo_quantidade->text().toInt(); }
+    void limpar_todos_campos();
 };
 
 #endif // WINDOW_H

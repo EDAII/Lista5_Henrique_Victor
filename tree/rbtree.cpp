@@ -10,8 +10,8 @@ void RBTree::rotate_left(Node *G, Node *P, Node *C) {
     C->parent = G;
     P->parent = C;
 
-    if (C->left)
-        C->left->parent = P;
+    if (P->right)
+        P->right->parent = P;
 }
 void RBTree::rotate_right(Node *G, Node *P, Node *C) {
     if (G != nullptr)
@@ -23,8 +23,8 @@ void RBTree::rotate_right(Node *G, Node *P, Node *C) {
     C->parent = G;
     P->parent = C;
 
-    if (C->right)
-        C->right->parent = P;
+    if (P->left)
+        P->left->parent = P;
 }
 
 void RBTree::insert(const Filme& info) {
@@ -47,18 +47,21 @@ RBTree::Node * RBTree::insert(Node **node, Node *parent, const Filme& info) {
 }
 
 void RBTree::restore_properties(Node *node) {
+    // Caso 1 - node é a raíz
     if (parent(node) == nullptr)
         node->color = Node::BLACK;
 
-    else if (parent(node)->color == Node::BLACK)
+    else if (parent(node)->color == Node::BLACK) // Caso 2 (não é necessário nenhuma operação)
         return;
     else if (uncle(node) and uncle(node)->color == Node::RED) {
+        // Caso 3 - pai e tio vermelhos
         parent(node)->color = Node::BLACK;
         uncle(node)->color = Node::BLACK;
         grandparent(node)->color = Node::RED;
         restore_properties(grandparent(node));
     }
     else {
+        // Caso 4 - pai vermelho, tio preto
         auto C = node;
         auto P = parent(node);
         auto G = grandparent(node);
@@ -216,4 +219,20 @@ void RBTree::rebalancing(Node *P, Node *S, Node *N) {
 
     if (parent(S) == nullptr)
         root = S;
+}
+
+void RBTree::clean() {
+    clean(root);
+}
+
+void RBTree::clean(Node *node) {
+    if(node != nullptr) {
+        if(node->left != nullptr)
+            clean(node->left);
+
+        if(node->right != nullptr)
+            clean(node->right);
+
+        delete node;
+    }
 }

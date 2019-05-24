@@ -1,10 +1,14 @@
 #include "window.h"
 #include <QPushButton>
 #include <QGridLayout>
-#include <QLabel>
 #include <QFont>
 #include <QEventLoop>
-#include <QLineEdit>
+#include <ctime>
+#include <QGroupBox>
+#include <QFormLayout>
+#include <QValidator>
+
+using namespace std;
 
 Window::Window(QWidget *parent) : QWidget(parent) {
     avl = AVLTree();
@@ -18,6 +22,21 @@ Window::Window(QWidget *parent) : QWidget(parent) {
     QVBoxLayout *tela = new QVBoxLayout(this);
     QGridLayout *arvores = new QGridLayout();
     QGridLayout *geral = new QGridLayout();
+
+    campo_quantidade = new QLineEdit();
+    campo_quantidade->setValidator(new QIntValidator(0, quant_filmes));
+    campo_titulo = new QLineEdit();
+    campo_ano = new QLineEdit();
+    campo_ano->setValidator(new QIntValidator(1920, 2019));
+    campo_bilheteria = new QLineEdit();
+    campo_bilheteria->setValidator(new QIntValidator());
+    campo_diretor = new QLineEdit();
+    campo_pais = new QLineEdit();
+    campo_duracao = new QLineEdit();
+    campo_duracao->setValidator(new QIntValidator(0, 180));
+    alert = new QLabel();
+
+    limpar_todos_campos();
 
     /*
      *                        ÁRVORE AVL
@@ -145,17 +164,15 @@ Window::Window(QWidget *parent) : QWidget(parent) {
     compare_searchs->setFixedWidth(button_size);
     compare_searchs->setFont(buttonFont);
 
-    tela->addLayout(arvores);
-    tela->addLayout(geral);
+    QGroupBox *group_arv = new QGroupBox(this);
+    QGroupBox *group_geral = new QGroupBox(this);
+
+    group_arv->setLayout(arvores);
+    group_geral->setLayout(geral);
+
+    tela->addWidget(group_arv);
+    tela->addWidget(group_geral);
     setLayout(tela);
-}
-
-void Window::random_avl() {
-    random_tree(0);
-}
-
-void Window::random_rb() {
-    random_tree(1);
 }
 
 void Window::random_tree(int opcao) {
@@ -165,9 +182,11 @@ void Window::random_tree(int opcao) {
     int button_size = 480;
     int maximum_label_height = 30;
 
-    QWidget window;
-    window.setFixedSize(500, 300);
-    window.show();
+    campo_quantidade->setText("");
+    campo_quantidade->setFont(campoFont);
+
+    new_window = new QWidget(nullptr);
+    new_window->setFixedSize(500, 300);
 
     QVBoxLayout *tela = new QVBoxLayout();
 
@@ -176,31 +195,33 @@ void Window::random_tree(int opcao) {
     label->setMaximumHeight(maximum_label_height);
     label->setFont(labelFont);
 
-    QLineEdit *campo = new QLineEdit();
-    campo->setFont(campoFont);
-
-    QPushButton *button = new QPushButton("Gerar", this);
+    QPushButton *button = new QPushButton("Gerar");
     button->setFixedWidth(button_size);
     button->setFont(buttonFont);
 
+    alert = new QLabel("");
+    alert->setAlignment(Qt::AlignCenter);
+    alert->setMaximumHeight(15);
+
     progressBar = new QProgressBar();
-    progressBar->setMinimum(0);
-    progressBar->setMaximum(10000000);
+    progressBar->setFixedHeight(40);
 
     if(!opcao) { // AVL
-        window.setWindowTitle("Gerar Árvore AVL Aleatória");
+        new_window->setWindowTitle("Gerar Árvore AVL Aleatória");
         connect(button, &QPushButton::clicked, this, &Window::gerar_avl_aleat);
     }
     else { // RB
-        window.setWindowTitle("Gerar Árvore RB Aleatória");
+        new_window->setWindowTitle("Gerar Árvore RB Aleatória");
         connect(button, &QPushButton::clicked, this, &Window::gerar_rb_aleat);
     }
 
     tela->addWidget(label);
-    tela->addWidget(campo);
+    tela->addWidget(campo_quantidade);
     tela->addWidget(button);
     tela->addWidget(progressBar);
-    window.setLayout(tela);
+    tela->addWidget(alert);
+    new_window->setLayout(tela);
+    new_window->show();
 
     QEventLoop loop;
     connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
@@ -210,35 +231,204 @@ void Window::random_tree(int opcao) {
 }
 
 void Window::gerar_avl_aleat() {
+    srand(time(0));
+    get_quantidade();
 
+    short int ano;
+    unsigned int bilheteria;
+    unsigned char duracao;
+
+    if(quantidade < 1 || quantidade > quant_filmes) {
+        QString text = "Numero deve estar entre 1 e ";
+        text.push_back(QString::number(quant_filmes));
+        alert->setText(text);
+        return;
+    }
+
+    alert->setText("");
+
+    progressBar->setMinimum(0);
+    progressBar->setMaximum(quantidade);
+
+    for(int i = 0; i < quantidade; ++i) {
+        ano = 1920 + (rand() % 100);
+        bilheteria = rand() % 4000000001;
+        duracao = rand() % 181;
+        Filme filme(filmes[i], ano, bilheteria, diretores[rand() % quant_diretores], paises[rand() % quant_paises], duracao);
+        //avl.insert(filme);
+        progressBar->setValue(i+1);
+    }
+
+    campo_quantidade->setText("");
+    new_window->close();
 }
 
 void Window::gerar_rb_aleat() {
+    srand(time(0));
+    get_quantidade();
 
+    short int ano;
+    unsigned int bilheteria;
+    unsigned char duracao;
+
+    if(quantidade < 1 || quantidade > quant_filmes) {
+        QString text = "Numero deve estar entre 1 e ";
+        text.push_back(QString::number(quant_filmes));
+        alert->setText(text);
+        return;
+    }
+
+    alert->setText("");
+
+    progressBar->setMinimum(0);
+    progressBar->setMaximum(quantidade);
+
+    //rb.clean();
+
+    for(int i = 0; i < quantidade; ++i) {
+        ano = 1920 + (rand() % 100);
+        bilheteria = rand() % 4000000001;
+        duracao = rand() % 181;
+        Filme filme(filmes[i], ano, bilheteria, diretores[rand() % quant_diretores], paises[rand() % quant_paises], duracao);
+        rb.insert(filme);
+        progressBar->setValue(i+1);
+    }
+
+    campo_quantidade->setText("");
+    new_window->close();
 }
 
-void Window::insert_avl() {
+void Window::insert(int opcao) {
+    new_window = new QWidget(nullptr);
+    new_window->setFixedSize(500, 400);
+    QFont buttonFont("Times", 20);
+    int button_size = 350;
+    limpar_todos_campos();
 
+    QFont labelFont("Times", 20, QFont::Bold);
+    QFont campoFont("Times", 20);
+
+    QFormLayout *formLayout = new QFormLayout;
+    formLayout->setLabelAlignment(Qt::AlignRight | Qt::AlignVCenter);
+
+    QLabel *main_label = new QLabel("Insira os dados do filme");
+    main_label->setFont(labelFont);
+    main_label->setAlignment(Qt::AlignCenter);
+    QLabel *label_titulo = new QLabel("Título:");
+    label_titulo->setFont(labelFont);
+    QLabel *label_ano = new QLabel("Ano:");
+    label_ano->setFont(labelFont);
+    QLabel *label_bilheteria = new QLabel("Bilheteria:");
+    label_bilheteria->setFont(labelFont);
+    QLabel *label_diretor = new QLabel("Diretor:");
+    label_diretor->setFont(labelFont);
+    QLabel *label_pais = new QLabel("País:");
+    label_pais->setFont(labelFont);
+    QLabel *label_duracao = new QLabel("Duração:");
+    label_duracao->setFont(labelFont);
+
+    campo_titulo->setFont(campoFont);
+    campo_ano->setFont(campoFont);
+    campo_bilheteria->setFont(campoFont);
+    campo_diretor->setFont(campoFont);
+    campo_pais->setFont(campoFont);
+    campo_duracao->setFont(campoFont);
+
+    formLayout->addWidget(main_label);
+    formLayout->addRow(label_titulo, campo_titulo);
+    formLayout->addRow(label_ano, campo_ano);
+    formLayout->addRow(label_bilheteria, campo_bilheteria);
+    formLayout->addRow(label_diretor, campo_diretor);
+    formLayout->addRow(label_pais, campo_pais);
+    formLayout->addRow(label_duracao, campo_duracao);
+
+    QPushButton *button = new QPushButton("Enviar");
+    button->setFixedWidth(button_size);
+    button->setFont(buttonFont);
+
+    if(!opcao) { // AVL
+        new_window->setWindowTitle("Inserir filme na AVL");
+        connect(button, &QPushButton::clicked, this, &Window::inserir_filme_avl);
+    }
+    else { // RB
+        new_window->setWindowTitle("Inserir filme na Red-Black");
+        connect(button, &QPushButton::clicked, this, &Window::inserir_filme_rb);
+    }
+
+    alert = new QLabel("");
+    alert->setAlignment(Qt::AlignCenter);
+    alert->setMaximumHeight(20);
+
+    formLayout->addWidget(button);
+    formLayout->addWidget(alert);
+
+    new_window->setLayout(formLayout);
+    new_window->show();
+
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
 }
 
-void Window::insert_rb() {
+void Window::tela_titulo(int opcao) {
+    QFont buttonFont("Times", 20);
+    QFont labelFont("Times", 20, QFont::Bold);
+    QFont campoFont("Times", 20);
+    int button_size = 480;
+    int maximum_label_height = 30;
 
-}
+    campo_titulo->setText("");
+    campo_titulo->setFont(campoFont);
 
-void Window::remove_avl() {
+    new_window = new QWidget(nullptr);
+    new_window->setFixedSize(500, 300);
 
-}
+    QVBoxLayout *tela = new QVBoxLayout();
 
-void Window::remove_rb() {
+    QLabel *label = new QLabel("Insira o nome do Filme");
+    label->setAlignment(Qt::AlignCenter);
+    label->setMaximumHeight(maximum_label_height);
+    label->setFont(labelFont);
 
-}
+    QPushButton *button = new QPushButton();
+    button->setFixedWidth(button_size);
+    button->setFont(buttonFont);
 
-void Window::search_avl() {
+    alert = new QLabel("");
+    alert->setAlignment(Qt::AlignCenter);
+    alert->setMaximumHeight(15);
 
-}
+    if(!opcao) { // Remover na AVL
+        new_window->setWindowTitle("Remover Filme na AVL");
+        button->setText("Remover");
+        connect(button, &QPushButton::clicked, this, &Window::gerar_avl_aleat);
+    }
+    else if(opcao == 1) { // Remover na RB
+        new_window->setWindowTitle("Remover Filme na Red-Black");
+        button->setText("Remover");
+        connect(button, &QPushButton::clicked, this, &Window::gerar_rb_aleat);
+    }
+    else if(opcao == 2) { // Buscar na AVL
+        new_window->setWindowTitle("Buscar Filme na AVL");
+        button->setText("Buscar");
+        connect(button, &QPushButton::clicked, this, &Window::gerar_rb_aleat);
+    }
+    else { // Buscar na RB
+        new_window->setWindowTitle("Buscar Filme na Red-Black");
+        button->setText("Buscar");
+        connect(button, &QPushButton::clicked, this, &Window::gerar_rb_aleat);
+    }
 
-void Window::search_rb() {
+    tela->addWidget(label);
+    tela->addWidget(campo_titulo);
+    tela->addWidget(button);
+    tela->addWidget(alert);
+    new_window->setLayout(tela);
+    new_window->show();
 
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
 }
 
 void Window::data_avl() {
@@ -271,4 +461,114 @@ void Window::comp_rmv() {
 
 void Window::comp_search() {
 
+}
+
+void Window::limpar_todos_campos() {
+    campo_quantidade->setText("");
+    campo_titulo->setText("");
+    campo_ano->setText("");
+    campo_bilheteria->setText("");
+    campo_duracao->setText("");
+    campo_diretor->setText("");
+    campo_pais->setText("");
+    alert->setText("");
+}
+
+void Window::inserir_filme_avl() {
+    QString aux = campo_titulo->text();
+    if(aux == "") {
+        alert->setText("Título não pode ser vazio");
+        return;
+    }
+    const char *titulo = aux.toStdString().c_str();
+
+    aux = campo_ano->text();
+    if(aux == "") {
+        alert->setText("Ano não pode ser vazio");
+        return;
+    }
+    short int ano = aux.toShort();
+
+    aux = campo_bilheteria->text();
+    if(aux == "") {
+        alert->setText("Bilheteria não pode ser vazio");
+        return;
+    }
+    unsigned int bilheteria = aux.toUInt();
+
+    aux = campo_diretor->text();
+    if(aux == "") {
+        alert->setText("Diretor não pode ser vazio");
+        return;
+    }
+    const char *diretor = aux.toStdString().c_str();
+
+    aux = campo_pais->text();
+    if(aux == "") {
+        alert->setText("País não pode ser vazio");
+        return;
+    }
+    const char *pais = aux.toStdString().c_str();
+
+    aux = campo_duracao->text();
+    if(aux == "") {
+        alert->setText("Duração não pode ser vazio");
+        return;
+    }
+    unsigned char duracao = aux.toShort();
+
+    Filme filme(titulo, ano, bilheteria, diretor, pais, duracao);
+
+    campo_quantidade->setText("");
+    new_window->close();
+}
+
+void Window::inserir_filme_rb() {
+    QString aux = campo_titulo->text();
+    if(aux == "") {
+        alert->setText("Título não pode ser vazio");
+        return;
+    }
+    const char *titulo = aux.toStdString().c_str();
+
+    aux = campo_ano->text();
+    if(aux == "") {
+        alert->setText("Ano não pode ser vazio");
+        return;
+    }
+    short int ano = aux.toShort();
+
+    aux = campo_bilheteria->text();
+    if(aux == "") {
+        alert->setText("Bilheteria não pode ser vazio");
+        return;
+    }
+    unsigned int bilheteria = aux.toUInt();
+
+    aux = campo_diretor->text();
+    if(aux == "") {
+        alert->setText("Diretor não pode ser vazio");
+        return;
+    }
+    const char *diretor = aux.toStdString().c_str();
+
+    aux = campo_pais->text();
+    if(aux == "") {
+        alert->setText("País não pode ser vazio");
+        return;
+    }
+    const char *pais = aux.toStdString().c_str();
+
+    aux = campo_duracao->text();
+    if(aux == "") {
+        alert->setText("Duração não pode ser vazio");
+        return;
+    }
+    unsigned char duracao = aux.toShort();
+
+    Filme filme(titulo, ano, bilheteria, diretor, pais, duracao);
+
+    rb.insert(filme);
+    campo_quantidade->setText("");
+    new_window->close();
 }
