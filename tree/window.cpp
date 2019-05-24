@@ -3,8 +3,13 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QFont>
+#include <QEventLoop>
+#include <QLineEdit>
 
 Window::Window(QWidget *parent) : QWidget(parent) {
+    avl = AVLTree();
+    rb = RBTree();
+
     int button_size = 300;
     int maximum_label_height = 30;
     QFont buttonFont("Times", 20);
@@ -146,10 +151,69 @@ Window::Window(QWidget *parent) : QWidget(parent) {
 }
 
 void Window::random_avl() {
-
+    random_tree(0);
 }
 
 void Window::random_rb() {
+    random_tree(1);
+}
+
+void Window::random_tree(int opcao) {
+    QFont buttonFont("Times", 20);
+    QFont labelFont("Times", 20, QFont::Bold);
+    QFont campoFont("Times", 20);
+    int button_size = 480;
+    int maximum_label_height = 30;
+
+    QWidget window;
+    window.setFixedSize(500, 300);
+    window.show();
+
+    QVBoxLayout *tela = new QVBoxLayout();
+
+    QLabel *label = new QLabel("Insira a quantidade de filmes");
+    label->setAlignment(Qt::AlignCenter);
+    label->setMaximumHeight(maximum_label_height);
+    label->setFont(labelFont);
+
+    QLineEdit *campo = new QLineEdit();
+    campo->setFont(campoFont);
+
+    QPushButton *button = new QPushButton("Gerar", this);
+    button->setFixedWidth(button_size);
+    button->setFont(buttonFont);
+
+    progressBar = new QProgressBar();
+    progressBar->setMinimum(0);
+    progressBar->setMaximum(10000000);
+
+    if(!opcao) { // AVL
+        window.setWindowTitle("Gerar Árvore AVL Aleatória");
+        connect(button, &QPushButton::clicked, this, &Window::gerar_avl_aleat);
+    }
+    else { // RB
+        window.setWindowTitle("Gerar Árvore RB Aleatória");
+        connect(button, &QPushButton::clicked, this, &Window::gerar_rb_aleat);
+    }
+
+    tela->addWidget(label);
+    tela->addWidget(campo);
+    tela->addWidget(button);
+    tela->addWidget(progressBar);
+    window.setLayout(tela);
+
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
+
+    quantidade = 0;
+}
+
+void Window::gerar_avl_aleat() {
+
+}
+
+void Window::gerar_rb_aleat() {
 
 }
 
