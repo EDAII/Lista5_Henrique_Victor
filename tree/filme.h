@@ -14,8 +14,9 @@ public:
     string get_diretor() const { return diretor; }
     string get_pais() const { return pais; }
     unsigned char get_duracao() const { return duracao; }
-    bool operator <(const Filme &outro) const { return bilheteria < outro.bilheteria; }
-    bool operator >(const Filme &outro) const { return bilheteria > outro.bilheteria; }
+    bool operator <(const Filme &outro) const { return titulo < outro.titulo; }
+    bool operator >(const Filme &outro) const { return titulo > outro.titulo; }
+    bool operator ==(const Filme &outro) const { return titulo == outro.titulo; }
 
 private:
     string titulo;
