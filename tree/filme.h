@@ -17,6 +17,7 @@ public:
     bool operator <(const Filme &outro) const { return titulo < outro.titulo; }
     bool operator >(const Filme &outro) const { return titulo > outro.titulo; }
     bool operator ==(const Filme &outro) const { return titulo == outro.titulo; }
+    bool operator >=(const Filme &outro) const { return titulo >= outro.titulo; }
 
 private:
     string titulo;

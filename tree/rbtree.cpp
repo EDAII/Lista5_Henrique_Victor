@@ -13,6 +13,7 @@ void RBTree::rotate_left(Node *G, Node *P, Node *C) {
     if (P->right)
         P->right->parent = P;
 }
+
 void RBTree::rotate_right(Node *G, Node *P, Node *C) {
     if (G != nullptr)
         G->left == P ? G->left = C : G->right = C;
@@ -228,15 +229,13 @@ void RBTree::clean() {
 }
 
 void RBTree::clean(Node *node) {
-    if(node != nullptr) {
-        if(node->left != nullptr)
-            clean(node->left);
+    if(node == nullptr)
+        return;
 
-        if(node->right != nullptr)
-            clean(node->right);
+    clean(node->left);
+    clean(node->right);
 
-        delete node;
-    }
+    delete node;
 }
 
 Filme RBTree::search(const char* titulo) {

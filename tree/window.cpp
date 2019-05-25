@@ -256,7 +256,7 @@ void Window::gerar_avl_aleat() {
         bilheteria = rand() % 4000000001;
         duracao = rand() % 181;
         Filme filme(filmes[i], ano, bilheteria, diretores[rand() % quant_diretores], paises[rand() % quant_paises], duracao);
-        //avl.insert(filme);
+        avl.insert(filme);
         progressBar->setValue(i+1);
     }
 
@@ -433,7 +433,14 @@ void Window::tela_titulo(int opcao) {
 }
 
 void Window::remover_filme_avl() {
-
+    Filme filme = avl.search(campo_titulo->text().toStdString().c_str());
+    if(filme.get_ano() == -1) // Filme não encontrado
+        QMessageBox::information(new_window, tr("Aviso"), tr("O filme não foi encontrado"));
+    else {
+        avl.deleteKey(filme);
+        QMessageBox::information(new_window, tr("Aviso"), tr("O filme foi deletado com sucesso"));
+        campo_titulo->setText("");
+    }
 }
 
 void Window::remover_filme_rb() {
@@ -448,7 +455,13 @@ void Window::remover_filme_rb() {
 }
 
 void Window::buscar_filme_avl() {
-
+    Filme filme = avl.search(campo_titulo->text().toStdString().c_str());
+    if(filme.get_ano() == -1) // Filme não encontrado
+        QMessageBox::information(new_window, tr("Aviso"), tr("O filme não foi encontrado"));
+    else {
+        new_window->close();
+        mostrar_filme_encontrado(filme);
+    }
 }
 
 void Window::buscar_filme_rb() {
@@ -641,6 +654,7 @@ void Window::inserir_filme_avl() {
 
     Filme filme(titulo, ano, bilheteria, diretor, pais, duracao);
 
+    avl.insert(filme);
     campo_quantidade->setText("");
     new_window->close();
 }

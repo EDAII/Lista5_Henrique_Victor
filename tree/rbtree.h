@@ -3,7 +3,6 @@
 
 #include "filme.h"
 
-
 class RBTree {
 public:
     RBTree() : root(nullptr) {}
