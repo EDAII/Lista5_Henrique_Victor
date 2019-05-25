@@ -402,12 +402,12 @@ void Window::tela_titulo(int opcao) {
     if(!opcao) { // Remover na AVL
         new_window->setWindowTitle("Remover Filme na AVL");
         button->setText("Remover");
-        connect(button, &QPushButton::clicked, this, &Window::gerar_avl_aleat);
+        connect(button, &QPushButton::clicked, this, &Window::remover_filme_avl);
     }
     else if(opcao == 1) { // Remover na RB
         new_window->setWindowTitle("Remover Filme na Red-Black");
         button->setText("Remover");
-        connect(button, &QPushButton::clicked, this, &Window::gerar_rb_aleat);
+        connect(button, &QPushButton::clicked, this, &Window::remover_filme_rb);
     }
     else if(opcao == 2) { // Buscar na AVL
         new_window->setWindowTitle("Buscar Filme na AVL");
@@ -432,8 +432,23 @@ void Window::tela_titulo(int opcao) {
     loop.exec();
 }
 
+void Window::remover_filme_avl() {
+
+}
+
+void Window::remover_filme_rb() {
+    Filme filme = rb.search(campo_titulo->text().toStdString().c_str());
+    if(filme.get_ano() == -1) // Filme não encontrado
+        QMessageBox::information(new_window, tr("Aviso"), tr("O filme não foi encontrado"));
+    else {
+        rb.erase(filme);
+        QMessageBox::information(new_window, tr("Aviso"), tr("O filme foi deletado com sucesso"));
+        campo_titulo->setText("");
+    }
+}
+
 void Window::buscar_filme_avl() {
-    QFont labelFont("Times", 20, QFont::Bold);
+
 }
 
 void Window::buscar_filme_rb() {
@@ -463,7 +478,14 @@ void Window::mostrar_filme_encontrado(const Filme& filme) {
 
     QLabel *filme_titulo = new QLabel(QString::fromStdString(filme.get_titulo()));
     QLabel *filme_ano = new QLabel(QString::number(filme.get_ano()));
-    QLabel *filme_bilheteria = new QLabel("U$ " + QString::number(filme.get_bilheteria()));
+
+    string bilheteria = to_string(filme.get_bilheteria());
+
+    for(size_t i = bilheteria.size(), j = 0; i > 0; --i, ++j)
+        if(!((j+1)%3) && i != 1)
+            bilheteria.insert(i-1, ".");
+
+    QLabel *filme_bilheteria = new QLabel("U$ " + QString::fromStdString(bilheteria) + ",00");
     QLabel *filme_diretor = new QLabel(QString::fromStdString(filme.get_diretor()));
     QLabel *filme_pais = new QLabel(QString::fromStdString(filme.get_pais()));
     QLabel *filme_duracao = new QLabel(QString::number(filme.get_duracao()) + " minutos");

@@ -8,7 +8,7 @@ class RBTree {
 public:
     RBTree() : root(nullptr) {}
     void insert(const Filme& info);
-    void erase(const Filme& info);
+    bool erase(const Filme& info);
     void clean();
     Filme search(const char* titulo);
 

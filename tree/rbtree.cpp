@@ -123,16 +123,18 @@ void RBTree::swap_nodes(Node *N, Node *C) {
         P->right = C;
 }
 
-void RBTree::erase(const Filme& info) {
+bool RBTree::erase(const Filme& info) {
     Node *N = find(root, info);
 
     if (N == nullptr)
-        return;
+        return false;
 
     if (N->left and N->right)
         N = swap_info(N);
 
     erase(N);
+
+    return true;
 }
 
 void RBTree::erase(Node *N) {

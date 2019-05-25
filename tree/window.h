@@ -44,6 +44,8 @@ private slots:
     void remove_rb() { tela_titulo(1); }
     void search_avl() { tela_titulo(2); }
     void search_rb() { tela_titulo(3); }
+    void remover_filme_avl();
+    void remover_filme_rb();
     void buscar_filme_avl();
     void buscar_filme_rb();
     void tela_titulo(int opcao);
