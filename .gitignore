@@ -1,9 +1,4 @@
-src/__pycache__/
-src/.vscode/
-src/*.html
-src/*.png
-src/*.gv
-src/*.pyc
+tree/.vscode/
 tree/tree
 tree/*.o
 tree/Makefile
