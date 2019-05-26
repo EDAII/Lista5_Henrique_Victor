@@ -5,19 +5,12 @@
 
 class RBTree {
 public:
-    RBTree() : root(nullptr) {}
-    void insert(const Filme& info);
-    bool erase(const Filme& info);
-    void clean();
-    Filme search(const char* titulo);
-
-private:
     struct Node {
         Filme info;
         enum { RED, BLACK } color;
         Node *left, *right, *parent;
     };
-
+private:
     Node *root;
 
     Node * parent(Node *node) { return node ? node->parent : nullptr; }
@@ -35,6 +28,14 @@ private:
     void rebalancing(Node *P, Node *S, Node *N);
     void clean(Node *node);
     Filme search_filme(Node *node, string titulo);
+
+public:
+    RBTree() : root(nullptr) {}
+    void insert(const Filme& info);
+    bool erase(const Filme& info);
+    void clean();
+    Filme search(const char* titulo);
+    Node* get_root() { return root; }
 };
 
 #endif // RBTREE_H

@@ -73,17 +73,23 @@ Window::Window(QWidget *parent) : QWidget(parent) {
     connect(search_at_AVL, &QPushButton::clicked, this, &Window::search_avl);
     arvores->addWidget(search_at_AVL, 4, 0);
 
+    QPushButton *all_movies_AVL = new QPushButton("Lista dos Filmes", this);
+    all_movies_AVL->setFixedWidth(button_size);
+    all_movies_AVL->setFont(buttonFont);
+    connect(all_movies_AVL, &QPushButton::clicked, this, &Window::list_avl);
+    arvores->addWidget(all_movies_AVL, 5, 0);
+
     QPushButton *AVL_data = new QPushButton("Dados da Árvore", this);
     AVL_data->setFixedWidth(button_size);
     AVL_data->setFont(buttonFont);
     connect(AVL_data, &QPushButton::clicked, this, &Window::data_avl);
-    arvores->addWidget(AVL_data, 5, 0);
+    arvores->addWidget(AVL_data, 6, 0);
 
     QPushButton *print_AVL = new QPushButton("Mostrar Árvore", this);
     print_AVL->setFixedWidth(button_size);
     print_AVL->setFont(buttonFont);
     connect(print_AVL, &QPushButton::clicked, this, &Window::print_avl);
-    arvores->addWidget(print_AVL, 6, 0);
+    arvores->addWidget(print_AVL, 7, 0);
 
     /*
      *                        ÁRVORE RED-BLACK
@@ -119,17 +125,23 @@ Window::Window(QWidget *parent) : QWidget(parent) {
     connect(search_at_RB, &QPushButton::clicked, this, &Window::search_rb);
     arvores->addWidget(search_at_RB, 4, 1);
 
+    QPushButton *all_movies_RB = new QPushButton("Lista dos Filmes", this);
+    all_movies_RB->setFixedWidth(button_size);
+    all_movies_RB->setFont(buttonFont);
+    connect(all_movies_RB, &QPushButton::clicked, this, &Window::list_rb);
+    arvores->addWidget(all_movies_RB, 5, 1);
+
     QPushButton *RB_data = new QPushButton("Dados da Árvore", this);
     RB_data->setFixedWidth(button_size);
     RB_data->setFont(buttonFont);
     connect(RB_data, &QPushButton::clicked, this, &Window::data_rb);
-    arvores->addWidget(RB_data, 5, 1);
+    arvores->addWidget(RB_data, 6, 1);
 
     QPushButton *print_RB = new QPushButton("Mostrar Árvore", this);
     print_RB->setFixedWidth(button_size);
     print_RB->setFont(buttonFont);
     connect(print_RB, &QPushButton::clicked, this, &Window::print_rb);
-    arvores->addWidget(print_RB, 6, 1);
+    arvores->addWidget(print_RB, 7, 1);
 
     /*
      *                        GERAL
@@ -557,6 +569,7 @@ void Window::mostrar_filme_encontrado(const Filme& filme) {
     layout->addWidget(filme_pais, 4, 1);
     layout->addWidget(filme_duracao, 5, 1);
 
+    new_window->setWindowTitle("Filme");
     new_window->setLayout(layout);
     new_window->setFixedSize(900, 400);
     new_window->show();
@@ -564,6 +577,63 @@ void Window::mostrar_filme_encontrado(const Filme& filme) {
     QEventLoop loop;
     connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
     loop.exec();
+}
+
+void Window::imprimir_lista(int opcao) {
+    QFont font("Times", 15, QFont::Bold);
+    new_window = new QWidget(nullptr);
+    QVBoxLayout *tela = new QVBoxLayout();
+
+    lista = new QListWidget();
+    lista->setFont(font);
+
+    if(!opcao) {
+        new_window->setWindowTitle("Lista de Filmes na AVL");
+        imprimir_avl(avl.get_root());
+    }
+    else {
+        new_window->setWindowTitle("Lista de Filmes na Red-Black");
+        imprimir_rb(rb.get_root());
+    }
+
+    tela->addWidget(lista);
+    new_window->setLayout(tela);
+    new_window->setFixedSize(650, 330);
+    new_window->show();
+
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
+
+    lista->clear();
+}
+
+void Window::imprimir_avl(AVLTree::Node *f) {
+    if(f == nullptr)
+        return;
+
+    imprimir_avl(f->left);
+    lista->addItem(QString::fromStdString("Título: " + f->info.get_titulo() +
+                                          "\nAno: " + to_string(f->info.get_ano()) +
+                                          "\nBilheteria: U$" + to_string(f->info.get_bilheteria()) + ",00" +
+                                          "\nDiretor: " + f->info.get_diretor() +
+                                          "\nPaís: " + f->info.get_pais() +
+                                          "\nDuração: " + to_string(f->info.get_duracao()) + " minutos\n"));
+    imprimir_avl(f->right);
+}
+
+void Window::imprimir_rb(RBTree::Node *f) {
+    if(f == nullptr)
+        return;
+
+    imprimir_rb(f->left);
+    lista->addItem(QString::fromStdString("Título: " + f->info.get_titulo() +
+                                          "\nAno: " + to_string(f->info.get_ano()) +
+                                          "\nBilheteria: U$" + to_string(f->info.get_bilheteria()) + ",00" +
+                                          "\nDiretor: " + f->info.get_diretor() +
+                                          "\nPaís: " + f->info.get_pais() +
+                                          "\nDuração: " + to_string(f->info.get_duracao()) + " minutos\n"));
+    imprimir_rb(f->right);
 }
 
 void Window::data_avl() {

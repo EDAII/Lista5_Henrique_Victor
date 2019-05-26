@@ -109,7 +109,6 @@ const char *const filmes[] = {
     "O Sexto Sentido",
     "Imortais",
     "Passageiros",
-    "A Bussola de Ouro",
     "Branca de Neve e os Sete Anões",
     "Pinóquio",
     "Fantasia",
@@ -157,7 +156,6 @@ const char *const filmes[] = {
     "Frozen: Uma Aventura Congelante",
     "Operação Big Hero",
     "Zootopia: Essa Cidade é o Bicho",
-    "A Familia do Futuro",
     "WiFi-Ralph",
     "Meu Amigo, o Dragão",
     "A Volta ao Mundo em 80 Minutos",
@@ -861,7 +859,6 @@ const char *const filmes[] = {
     "Scooby-Doo",
     "A Lagoa Azul",
     "As Panteras",
-    "A Lenda Tesouro Perdido",
     "Aprendiz de Feiticeiro",
     "Superman - O Filme",
     "Desventuras em Série",
@@ -1372,7 +1369,6 @@ const char *const filmes[] = {
     "David Holzman's diary",
     "O bandido da luz vermelha",
     "Vergonha",
-    "2001 - uma odisséia no espaço",
     "A hora do Lobo",
     "Na mira da morte",
     "A noite dos mortos-vivos",
@@ -1815,7 +1811,7 @@ const char *const filmes[] = {
     "Quatro leões",
     "A rede social",
     "O discurso do Rei",
-    "Bravura indômita",
+    "Bravura indômita"
 }; // FILMES
 
 const char *const diretores[] = {

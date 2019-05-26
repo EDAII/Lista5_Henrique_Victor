@@ -9,6 +9,7 @@
 #include "dados.h"
 #include <QLineEdit>
 #include <QLabel>
+#include <QListWidget>
 
 class Window : public QWidget {
 public:
@@ -28,6 +29,7 @@ private:
     QLineEdit *campo_duracao;
     QLabel *alert;
     QWidget *new_window;
+    QListWidget *lista;
 
 private slots:
     void random_avl() { random_tree(0); }
@@ -48,6 +50,11 @@ private slots:
     void remover_filme_rb();
     void buscar_filme_avl();
     void buscar_filme_rb();
+    void list_avl() { imprimir_lista(0); }
+    void list_rb() { imprimir_lista(1); }
+    void imprimir_lista(int opcao);
+    void imprimir_avl(AVLTree::Node *f);
+    void imprimir_rb(RBTree::Node *f);
     void tela_titulo(int opcao);
     void data_avl();
     void data_rb();
