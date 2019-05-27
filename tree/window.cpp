@@ -25,7 +25,7 @@ Window::Window(QWidget *parent) : QWidget(parent) {
     QGridLayout *geral = new QGridLayout();
 
     campo_quantidade = new QLineEdit();
-    campo_quantidade->setValidator(new QIntValidator(0, quant_filmes));
+    campo_quantidade->setValidator(new QIntValidator());
     campo_titulo = new QLineEdit();
     campo_ano = new QLineEdit();
     campo_ano->setValidator(new QIntValidator(1920, 2019));
@@ -247,14 +247,8 @@ void Window::gerar_avl_aleat() {
     srand(time(0));
     get_quantidade();
 
-    short int ano;
-    unsigned int bilheteria;
-    unsigned char duracao;
-
-    if(quantidade < 1 || quantidade > quant_filmes) {
-        QString text = "Numero deve estar entre 1 e ";
-        text.push_back(QString::number(quant_filmes));
-        alert->setText(text);
+    if(!quantidade) {
+        alert->setText("Numero deve ser maior que 0");
         return;
     }
 
@@ -266,11 +260,12 @@ void Window::gerar_avl_aleat() {
     avl.clean();
 
     for(int i = 0; i < quantidade; ++i) {
-        ano = 1920 + (rand() % 100);
-        bilheteria = rand() % 4000000001;
-        duracao = rand() % 181;
-        Filme filme(filmes[i], ano, bilheteria, diretores[rand() % quant_diretores], paises[rand() % quant_paises], duracao);
-        avl.insert(filme);
+        avl.insert(Filme(filmes[rand() % quant_filmes],
+                   1920 + (rand() % 100),
+                   rand() % 4000000001,
+                   diretores[rand() % quant_diretores],
+                   paises[rand() % quant_paises],
+                   rand() % 181));
         progressBar->setValue(i+1);
     }
 
@@ -282,14 +277,8 @@ void Window::gerar_rb_aleat() {
     srand(time(0));
     get_quantidade();
 
-    short int ano;
-    unsigned int bilheteria;
-    unsigned char duracao;
-
-    if(quantidade < 1 || quantidade > quant_filmes) {
-        QString text = "Numero deve estar entre 1 e ";
-        text.push_back(QString::number(quant_filmes));
-        alert->setText(text);
+    if(!quantidade) {
+        alert->setText("Numero deve ser maior que 0");
         return;
     }
 
@@ -301,11 +290,12 @@ void Window::gerar_rb_aleat() {
     rb.clean();
 
     for(int i = 0; i < quantidade; ++i) {
-        ano = 1920 + (rand() % 100);
-        bilheteria = rand() % 4000000001;
-        duracao = rand() % 181;
-        Filme filme(filmes[i], ano, bilheteria, diretores[rand() % quant_diretores], paises[rand() % quant_paises], duracao);
-        rb.insert(filme);
+        rb.insert(Filme(filmes[rand() % quant_filmes],
+                  1920 + (rand() % 100),
+                  rand() % 4000000001,
+                  diretores[rand() % quant_diretores],
+                  paises[rand() % quant_paises],
+                  rand() % 181));
         progressBar->setValue(i+1);
     }
 

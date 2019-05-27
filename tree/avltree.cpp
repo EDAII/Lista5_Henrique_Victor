@@ -14,10 +14,8 @@ void AVLTree::insert(const Filme& info){
         n = goLeft ? n->left : n->right;
 
         if (n == nullptr) {
-            if (goLeft)
-                parent->left = new Node {info, 0, nullptr, nullptr, parent};
-            else
-                parent->right = new Node {info, 0, nullptr, nullptr, parent};
+            goLeft ? parent->left = new Node {info, 0, nullptr, nullptr, parent} :
+                     parent->right = new Node {info, 0, nullptr, nullptr, parent};
 
             rebalance(parent);
             break;
@@ -46,12 +44,8 @@ void AVLTree::deleteKey(const Filme& delKey){
 
         if (root->info == delKey)
             root = child;
-
         else {
-            if (parent->left == n)
-                parent->left = child;
-            else
-                parent->right = child;
+            parent->left == n ? parent->left = child : parent->right = child;
 
             rebalance(parent);
         }
@@ -69,12 +63,8 @@ AVLTree::Node* AVLTree::rotateLeft(Node *a){
     b->left = a;
     a->parent = b;
 
-    if (b->parent != nullptr) {
-        if (b->parent->right == a)
-            b->parent->right = b;
-        else
-            b->parent->left = b;
-    }
+    if (b->parent != nullptr)
+        b->parent->right == a ? b->parent->right = b : b->parent->left = b;
 
     setBalance(a);
     setBalance(b);
@@ -92,12 +82,8 @@ AVLTree::Node* AVLTree::rotateRight(Node *a){
     b->right = a;
     a->parent = b;
 
-    if (b->parent != nullptr) {
-        if (b->parent->right == a)
-            b->parent->right = b;
-        else
-            b->parent->left = b;
-    }
+    if (b->parent != nullptr)
+        b->parent->right == a ? b->parent->right = b : b->parent->left = b;
 
     setBalance(a);
     setBalance(b);
@@ -117,18 +103,10 @@ AVLTree::Node* AVLTree::rotateRightThenLeft(Node *n){
 void AVLTree::rebalance(Node *n){
     setBalance(n);
 
-    if (n->balance == -2) {
-        if (height(n->left->left) >= height(n->left->right))
-            n = rotateRight(n);
-        else
-            n = rotateLeftThenRight(n);
-    }
-    else if (n->balance == 2) {
-       if (height(n->right->right) >= height(n->right->left))
-            n = rotateLeft(n);
-        else
-            n = rotateRightThenLeft(n);
-    }
+    if (n->balance == -2)
+        n = height(n->left->left) >= height(n->left->right) ? rotateRight(n) : rotateLeftThenRight(n);
+    else if (n->balance == 2)
+       n = height(n->right->right) >= height(n->right->left) ? rotateLeft(n) : rotateRightThenLeft(n);
 
     if (n->parent != nullptr)
         rebalance(n->parent);

@@ -39,12 +39,7 @@ RBTree::Node * RBTree::insert(Node **node, Node *parent, const Filme& info) {
         return *node;
     }
 
-    if ((*node)->info == info)
-        return *node;
-    else if (info < (*node)->info)
-        return insert(&(*node)->left, *node, info);
-    else
-        return insert(&(*node)->right, *node, info);
+    return info > (*node)->info ? insert(&(*node)->right, *node, info) : insert(&(*node)->left, *node, info);
 }
 
 void RBTree::restore_properties(Node *node) {
