@@ -39,14 +39,14 @@ RBTree::Node * RBTree::insert(Node **node, Node *parent, const Filme& info) {
         return *node;
     }
 
-    return info > (*node)->info ? insert(&(*node)->right, *node, info) : insert(&(*node)->left, *node, info);
+    return info > (*node)->info ? insert(&(*node)->right, *node, info) :
+                                  insert(&(*node)->left, *node, info);
 }
 
 void RBTree::restore_properties(Node *node) {
     // Caso 1 - node é a raíz
     if (parent(node) == nullptr)
         node->color = Node::BLACK;
-
     else if (parent(node)->color == Node::BLACK) // Caso 2 (não é necessário nenhuma operação)
         return;
     else if (uncle(node) and uncle(node)->color == Node::RED) {
@@ -75,10 +75,7 @@ void RBTree::restore_properties(Node *node) {
         P = G;
         G = parent(P);
 
-        if (C == P->left)
-            rotate_right(G, P, C);
-        else
-            rotate_left(G, P, C);
+        C == P->left ? rotate_right(G, P, C) : rotate_left(G, P, C);
 
         if (G == nullptr)
             root = C;
@@ -158,10 +155,8 @@ void RBTree::rebalancing(Node *P, Node *S, Node *N) {
         P->color = Node::RED;
         S->color = Node::BLACK;
 
-        if (N == P->left)
-            rotate_left(grandparent(S), P, S);
-        else
-            rotate_right(grandparent(S), P, S);
+        N == P->left ? rotate_left(grandparent(S), P, S) :
+                       rotate_right(grandparent(S), P, S);
 
         if (parent(S) == nullptr)
             root = S;

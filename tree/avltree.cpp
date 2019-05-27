@@ -46,7 +46,6 @@ void AVLTree::deleteKey(const Filme& delKey){
             root = child;
         else {
             parent->left == n ? parent->left = child : parent->right = child;
-
             rebalance(parent);
         }
     }
