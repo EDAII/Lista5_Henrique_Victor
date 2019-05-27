@@ -1,27 +1,26 @@
 #include "avltree.h"
 
 void AVLTree::insert(const Filme& info){
-    if (root == nullptr)
+    if (root == nullptr) {
         root = new Node {info, 0, nullptr, nullptr, nullptr};
+        return;
+    }
+    Node *n = root, *parent;
 
-    else {
-        Node *n = root, *parent;
+    while (true) {
+        parent = n;
 
-        while (true) {
-            parent = n;
+        bool goLeft = n->info > info;
+        n = goLeft ? n->left : n->right;
 
-            bool goLeft = n->info > info;
-            n = goLeft ? n->left : n->right;
+        if (n == nullptr) {
+            if (goLeft)
+                parent->left = new Node {info, 0, nullptr, nullptr, parent};
+            else
+                parent->right = new Node {info, 0, nullptr, nullptr, parent};
 
-            if (n == nullptr) {
-                if (goLeft)
-                    parent->left = new Node {info, 0, nullptr, nullptr, parent};
-                else
-                    parent->right = new Node {info, 0, nullptr, nullptr, parent};
-
-                rebalance(parent);
-                break;
-            }
+            rebalance(parent);
+            break;
         }
     }
 }
@@ -75,7 +74,6 @@ AVLTree::Node* AVLTree::rotateLeft(Node *a){
             b->parent->right = b;
         else
             b->parent->left = b;
-
     }
 
     setBalance(a);
@@ -150,7 +148,7 @@ void AVLTree::setBalance(Node *n){
 }
 
 void AVLTree::clean() {
-
+    clean(root);
 }
 
 Filme AVLTree::search(const char* titulo) {
@@ -159,7 +157,8 @@ Filme AVLTree::search(const char* titulo) {
 }
 
 void AVLTree::clean(Node *node) {
-
+    while(root != nullptr)
+        deleteKey(root->info);
 }
 
 Filme AVLTree::search_filme(Node *node, string titulo) {

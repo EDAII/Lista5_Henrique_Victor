@@ -263,6 +263,8 @@ void Window::gerar_avl_aleat() {
     progressBar->setMinimum(0);
     progressBar->setMaximum(quantidade);
 
+    avl.clean();
+
     for(int i = 0; i < quantidade; ++i) {
         ano = 1920 + (rand() % 100);
         bilheteria = rand() % 4000000001;
@@ -296,7 +298,7 @@ void Window::gerar_rb_aleat() {
     progressBar->setMinimum(0);
     progressBar->setMaximum(quantidade);
 
-    //rb.clean();
+    rb.clean();
 
     for(int i = 0; i < quantidade; ++i) {
         ano = 1920 + (rand() % 100);

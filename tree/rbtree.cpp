@@ -229,13 +229,8 @@ void RBTree::clean() {
 }
 
 void RBTree::clean(Node *node) {
-    if(node == nullptr)
-        return;
-
-    clean(node->left);
-    clean(node->right);
-
-    delete node;
+    while(root != nullptr)
+        erase(root);
 }
 
 Filme RBTree::search(const char* titulo) {
