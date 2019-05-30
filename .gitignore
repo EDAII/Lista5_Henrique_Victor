@@ -1,4 +1,4 @@
-tree/.vscode/
+tree/.vscode/*
 tree/tree
 tree/*.o
 tree/Makefile
