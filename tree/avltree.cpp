@@ -1,17 +1,8 @@
 #include "avltree.h"
-#include <ctime>
-#include <iostream>
-
-int tempo;
 
 void AVLTree::insert(const Filme& info){
-    int inicio = clock();
-    int fim = 0;
     if (root == nullptr) {
         root = new Node {info, 0, nullptr, nullptr, nullptr};
-        fim = clock();
-        tempo += fim - inicio;
-        std::cout << tempo/double(CLOCKS_PER_SEC)*1000 << endl;
         return;
     }
     Node *n = root, *parent;
@@ -30,9 +21,6 @@ void AVLTree::insert(const Filme& info){
             break;
         }
     }
-    fim = clock();
-    tempo += fim - inicio;
-    std::cout << tempo/double(CLOCKS_PER_SEC)*1000 << endl;
 }
 
 void AVLTree::deleteKey(const Filme& delKey){
