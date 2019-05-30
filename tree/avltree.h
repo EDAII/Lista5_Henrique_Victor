@@ -11,6 +11,8 @@ public:
         Node *left, *right, *parent;
     };
 
+    int rotate_left = 0;
+
 private:
     Node *root;
     Node* rotateLeft(Node *a);
@@ -30,6 +32,7 @@ public:
     void clean();
     Filme search(const char* titulo);
     Node* get_root() { return root; }
+    
 };
 
 #endif // AVLTREE_H

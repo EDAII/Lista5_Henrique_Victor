@@ -67,6 +67,8 @@ AVLTree::Node* AVLTree::rotateLeft(Node *a){
 
     setBalance(a);
     setBalance(b);
+    rotate_left++;
+    printf("%d\n", rotate_left);
     return b;
 }
 
