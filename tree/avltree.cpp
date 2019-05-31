@@ -3,6 +3,7 @@
 void AVLTree::insert(const Filme& info){
     if (root == nullptr) {
         root = new Node {info, 0, nullptr, nullptr, nullptr};
+        _size++;
         return;
     }
     Node *n = root, *parent;
