@@ -95,12 +95,6 @@ Window::Window(QWidget *parent) : QWidget(parent) {
     connect(AVL_data, &QPushButton::clicked, this, &Window::data_avl);
     arvores->addWidget(AVL_data, 6, 0);
 
-    QPushButton *print_AVL = new QPushButton("Mostrar Árvore", this);
-    print_AVL->setFixedWidth(button_size);
-    print_AVL->setFont(buttonFont);
-    connect(print_AVL, &QPushButton::clicked, this, &Window::print_avl);
-    arvores->addWidget(print_AVL, 7, 0);
-
     /*
      *                        ÁRVORE RED-BLACK
      */
@@ -146,12 +140,6 @@ Window::Window(QWidget *parent) : QWidget(parent) {
     RB_data->setFont(buttonFont);
     connect(RB_data, &QPushButton::clicked, this, &Window::data_rb);
     arvores->addWidget(RB_data, 6, 1);
-
-    QPushButton *print_RB = new QPushButton("Mostrar Árvore", this);
-    print_RB->setFixedWidth(button_size);
-    print_RB->setFont(buttonFont);
-    connect(print_RB, &QPushButton::clicked, this, &Window::print_rb);
-    arvores->addWidget(print_RB, 7, 1);
 
     /*
      *                        GERAL
@@ -639,11 +627,170 @@ void Window::imprimir_rb(RBTree::Node *f) {
 }
 
 void Window::data_avl() {
+    new_window = new QWidget(nullptr);
 
+    QFont labelFont("Times", 20, QFont::Bold);
+    int maximum_label_height = 30;
+
+    QGridLayout *layout = new QGridLayout();
+
+    QLabel *label_rebalance = new QLabel("Rebalanciamentos: ");
+    QLabel *label_rotate_left = new QLabel("Rotações a Esquerda: ");
+    QLabel *label_rotate_right = new QLabel("Rotações a Direita: ");
+    QLabel *label_size = new QLabel("Tamanho: ");
+    
+    QLabel *quantidade_rebalance = new QLabel(QString::number(avl._rebalance));
+    QLabel *quantidade_rotate_left = new QLabel(QString::number(avl._rotate_left));
+    QLabel *quantidade_rotate_right = new QLabel(QString::number(avl._rotate_right));
+    QLabel *quantidade_size = new QLabel(QString::number(avl._size));
+
+    label_rebalance->setMaximumHeight(maximum_label_height);
+    label_rebalance->setFont(labelFont);
+    label_rotate_left->setMaximumHeight(maximum_label_height);
+    label_rotate_left->setFont(labelFont);
+    label_rotate_right->setMaximumHeight(maximum_label_height);
+    label_rotate_right->setFont(labelFont);
+    label_size->setMaximumHeight(maximum_label_height);
+    label_size->setFont(labelFont);
+
+    quantidade_rebalance->setMaximumHeight(maximum_label_height);
+    quantidade_rotate_left->setMaximumHeight(maximum_label_height);
+    quantidade_rotate_right->setMaximumHeight(maximum_label_height);
+    quantidade_size->setMaximumHeight(maximum_label_height);
+    quantidade_rebalance->setFont(labelFont);
+    quantidade_rotate_left->setFont(labelFont);
+    quantidade_rotate_right->setFont(labelFont);
+    quantidade_size->setFont(labelFont);
+
+
+
+    label_rebalance->setAlignment(Qt::AlignRight);
+    label_rotate_left->setAlignment(Qt::AlignRight);
+    label_rotate_right->setAlignment(Qt::AlignRight);
+    label_size->setAlignment(Qt::AlignRight);
+
+
+    layout->addWidget(label_rebalance, 0, 0);
+    layout->addWidget(label_rotate_left, 1, 0);
+    layout->addWidget(label_rotate_right, 2, 0);
+    layout->addWidget(label_size, 3, 0);
+
+    quantidade_rebalance->setAlignment(Qt::AlignLeft);
+    quantidade_rotate_left->setAlignment(Qt::AlignLeft);
+    quantidade_rotate_right->setAlignment(Qt::AlignLeft);
+    quantidade_size->setAlignment(Qt::AlignLeft);
+
+    layout->addWidget(quantidade_rebalance, 0, 1);
+    layout->addWidget(quantidade_rotate_left, 1, 1);
+    layout->addWidget(quantidade_rotate_right, 2, 1);
+    layout->addWidget(quantidade_size, 3, 1);
+
+    new_window->setWindowTitle("Dados da AVL");
+    new_window->setLayout(layout);
+    new_window->setFixedSize(900, 400);
+    new_window->show();
+
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
 }
 
 void Window::data_rb() {
+    new_window = new QWidget(nullptr);
 
+    QFont labelFont("Times", 20, QFont::Bold);
+    int maximum_label_height = 30;
+
+    QGridLayout *layout = new QGridLayout();
+
+    QLabel *label_rebalance = new QLabel("Rebalanciamentos: ");
+    QLabel *label_rotate_left = new QLabel("Rotações a Esquerda: ");
+    QLabel *label_rotate_right = new QLabel("Rotações a Direita: ");
+    QLabel *label_size = new QLabel("Tamanho: ");
+    QLabel *label_swap_info = new QLabel("Swaps de Infos: ");
+    QLabel *label_swap_node = new QLabel("Swaps de Nodes: ");
+    QLabel *label_restore_properties = new QLabel("Propriedades Restauradas: ");
+    
+    QLabel *quantidade_rebalance = new QLabel(QString::number(rb._rebalance));
+    QLabel *quantidade_rotate_left = new QLabel(QString::number(rb._rotate_left));
+    QLabel *quantidade_rotate_right = new QLabel(QString::number(rb._rotate_right));
+    QLabel *quantidade_size = new QLabel(QString::number(rb._size));
+    QLabel *quantidade_swap_info = new QLabel(QString::number(rb._swap_info));
+    QLabel *quantidade_swap_node = new QLabel(QString::number(rb._swap_node));
+    QLabel *quantidade_restore_properties = new QLabel(QString::number(rb._restore_properties));
+
+
+    label_rebalance->setMaximumHeight(maximum_label_height);
+    label_rebalance->setFont(labelFont);
+    label_rotate_left->setMaximumHeight(maximum_label_height);
+    label_rotate_left->setFont(labelFont);
+    label_rotate_right->setMaximumHeight(maximum_label_height);
+    label_rotate_right->setFont(labelFont);
+    label_size->setMaximumHeight(maximum_label_height);
+    label_size->setFont(labelFont);
+    label_swap_info->setMaximumHeight(maximum_label_height);
+    label_swap_info->setFont(labelFont);
+    label_swap_node->setMaximumHeight(maximum_label_height);
+    label_swap_node->setFont(labelFont);
+    label_restore_properties->setMaximumHeight(maximum_label_height);
+    label_restore_properties->setFont(labelFont);
+
+    quantidade_rebalance->setMaximumHeight(maximum_label_height);
+    quantidade_rotate_left->setMaximumHeight(maximum_label_height);
+    quantidade_rotate_right->setMaximumHeight(maximum_label_height);
+    quantidade_size->setMaximumHeight(maximum_label_height);
+    quantidade_swap_info->setMaximumHeight(maximum_label_height);
+    quantidade_swap_node->setMaximumHeight(maximum_label_height);
+    quantidade_restore_properties->setMaximumHeight(maximum_label_height);
+
+    quantidade_rebalance->setFont(labelFont);
+    quantidade_rotate_left->setFont(labelFont);
+    quantidade_rotate_right->setFont(labelFont);
+    quantidade_size->setFont(labelFont);
+    quantidade_swap_info->setFont(labelFont);
+    quantidade_swap_node->setFont(labelFont);
+    quantidade_restore_properties->setFont(labelFont);
+
+    label_rebalance->setAlignment(Qt::AlignRight);
+    label_rotate_left->setAlignment(Qt::AlignRight);
+    label_rotate_right->setAlignment(Qt::AlignRight);
+    label_size->setAlignment(Qt::AlignRight);
+    label_swap_info->setAlignment(Qt::AlignRight);
+    label_swap_node->setAlignment(Qt::AlignRight);
+    label_restore_properties->setAlignment(Qt::AlignRight);
+
+    layout->addWidget(label_rebalance, 0, 0);
+    layout->addWidget(label_rotate_left, 1, 0);
+    layout->addWidget(label_rotate_right, 2, 0);
+    layout->addWidget(label_size, 3, 0);
+    layout->addWidget(label_swap_info, 4, 0);
+    layout->addWidget(label_swap_node, 5, 0);
+    layout->addWidget(label_restore_properties, 6, 0);
+
+    quantidade_rebalance->setAlignment(Qt::AlignLeft);
+    quantidade_rotate_left->setAlignment(Qt::AlignLeft);
+    quantidade_rotate_right->setAlignment(Qt::AlignLeft);
+    quantidade_size->setAlignment(Qt::AlignLeft);
+    quantidade_swap_info->setAlignment(Qt::AlignLeft);
+    quantidade_swap_node->setAlignment(Qt::AlignLeft);
+    quantidade_restore_properties->setAlignment(Qt::AlignLeft);
+
+    layout->addWidget(quantidade_rebalance, 0, 1);
+    layout->addWidget(quantidade_rotate_left, 1, 1);
+    layout->addWidget(quantidade_rotate_right, 2, 1);
+    layout->addWidget(quantidade_size, 3, 1);
+    layout->addWidget(quantidade_swap_info, 4, 1);
+    layout->addWidget(quantidade_swap_node, 5, 1);
+    layout->addWidget(quantidade_restore_properties, 6, 1);
+
+    new_window->setWindowTitle("Dados da RB");
+    new_window->setLayout(layout);
+    new_window->setFixedSize(900, 400);
+    new_window->show();
+
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
 }
 
 void Window::print_avl() {

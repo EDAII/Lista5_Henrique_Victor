@@ -15,6 +15,9 @@ public:
     int _rotate_right = 0;
     int _rebalance = 0;
     int _size = 0;
+    int _restore_properties = 0;
+    int _swap_info = 0;
+    int _swap_node = 0;
 
 private:
     Node *root;

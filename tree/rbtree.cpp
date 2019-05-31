@@ -53,6 +53,7 @@ void RBTree::restore_properties(Node *node) {
     else if (parent(node)->color == Node::BLACK) // Caso 2 (não é necessário nenhuma operação)
         return;
     else if (uncle(node) and uncle(node)->color == Node::RED) {
+        _restore_properties++;
         // Caso 3 - pai e tio vermelhos
         parent(node)->color = Node::BLACK;
         uncle(node)->color = Node::BLACK;
@@ -102,6 +103,7 @@ RBTree::Node * RBTree::swap_info(Node *N) {
         D = D->right;
 
     swap(N->info, D->info);
+    _swap_info++;
     return D;
 }
 
@@ -117,6 +119,7 @@ void RBTree::swap_nodes(Node *N, Node *C) {
         P->left = C;
     else
         P->right = C;
+    _swap_node++;
 }
 
 bool RBTree::erase(const Filme& info) {
@@ -226,6 +229,9 @@ void RBTree::clean() {
     _rotate_right = 0;
     _rebalance = 0;
     _size = 0;
+    _restore_properties = 0;
+    _swap_info = 0;
+    _swap_node = 0;
 }
 
 void RBTree::clean(Node *node) {
