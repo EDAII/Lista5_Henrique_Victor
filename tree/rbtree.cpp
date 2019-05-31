@@ -224,7 +224,9 @@ void RBTree::rebalancing(Node *P, Node *S, Node *N) {
 }
 
 void RBTree::clean() {
-    clean(root);
+    while(root != nullptr)
+        erase(root);
+
     _rotate_left = 0;
     _rotate_right = 0;
     _rebalance = 0;
@@ -232,11 +234,6 @@ void RBTree::clean() {
     _restore_properties = 0;
     _swap_info = 0;
     _swap_node = 0;
-}
-
-void RBTree::clean(Node *node) {
-    while(root != nullptr)
-        erase(root);
 }
 
 Filme RBTree::search(const char* titulo) {

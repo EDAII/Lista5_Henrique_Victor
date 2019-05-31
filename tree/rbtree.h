@@ -35,7 +35,6 @@ private:
     void swap_nodes(Node *N, Node *C);
     void erase(Node *N);
     void rebalancing(Node *P, Node *S, Node *N);
-    void clean(Node *node);
     Filme search_filme(Node *node, string titulo);
 
 public:

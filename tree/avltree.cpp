@@ -132,21 +132,18 @@ void AVLTree::setBalance(Node *n){
 }
 
 void AVLTree::clean() {
-    clean(root);
+    while(root != nullptr)
+        deleteKey(root->info);
+
+    _rotate_left = 0;
+    _rotate_right = 0;
+    _rebalance = 0;
+    _size = 0;
 }
 
 Filme AVLTree::search(const char* titulo) {
     string aux(titulo);
     return search_filme(root, aux);
-}
-
-void AVLTree::clean(Node *node) {
-    while(root != nullptr)
-        deleteKey(root->info);
-        _rotate_left = 0;
-        _rotate_right = 0;
-        _rebalance = 0;
-        _size = 0;
 }
 
 Filme AVLTree::search_filme(Node *node, string titulo) {

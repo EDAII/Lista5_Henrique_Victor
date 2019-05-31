@@ -56,12 +56,11 @@ O software armazena os filmes em árvores, sendo que dois tipos de árvores est�
   - Inserir (o usuário informará os dados do filme e o programa irá adicioná-lo à árvore)
   - Remover (o usuário informará os dados do filme, o programa irá procurá-lo na árvore e, caso encontre, irá removê-lo da árvore)
   - Buscar (o usuário informará os dados do filme, o programa irá procurá-lo na árvore e, caso encontre, informará o usuário que o filme foi encontrado)
-  - Ver dados da árvore (o programa mostrará ao usuário dados como: quantidade de elementos, vezes que usou rotação à esquerda e rotação à direita, tamanho da árvore)
-  - Ver árvore (o programa mostrará uma imagem que representa a árvore)
+  - Ver dados da árvore (o programa mostrará ao usuário dados como: quantidade de elementos, vezes que usou rotação à esquerda e rotação à direita, etc)
 
   Além disso, o usuário ainda pode:
-   - Comparar Performance (as duas árvores estarão vazias, o usuário dirá quantas inserções, buscas e remoções quer fazer e o programa fará as operações dos mesmos dados aleatórios nas duas árvores e mostrará ao usuário algumas informações sobre as três operações)
-   - Comparar Inserções (as duas árvores estarão vazias, o usuário dirá quantas inserções quer fazer e o programa fará as inserções dos mesmos dados aleatórios nas duas árvores e mostrará ao usuário algumas informações sobre as inserções)
-   - Comparar Remoções (as duas árvores terão os mesmos dados, o usuário dirá quantas remoções quer fazer e o programa fará as remoções dos mesmos dados nas duas árvores e mostrará ao usuário algumas informações sobre as remoções)
-   - Comparar Buscas (as duas árvores terão os mesmos dados, o usuário dirá quantas buscas quer fazer e o programa fará as buscas dos mesmos dados aleatórios nas duas árvores e mostrará ao usuário algumas informações sobre as buscas)
+   - Comparar Performance (as duas árvores estarão vazias, o programa fará uma certa quantidade de inserções, buscas e remoções e mostrará ao usuário o tempo necessário para fazer as operações)
+   - Comparar Inserções (as duas árvores estarão vazias, o usuário dirá quantas inserções quer fazer e o programa fará as inserções dos dados aleatórios nas duas árvores e mostrará ao usuário o tempo levado para fazer as inserções)
+   - Comparar Remoções (as duas árvores terão uma certa quantidade de elementos, o usuário dirá quantas remoções quer fazer e o programa fará as remoções dos dados nas duas árvores e mostrará ao usuário o tempo levado para fazer as remoções)
+   - Comparar Buscas (as duas árvores terão uma certa quantidade de elementos, o usuário dirá quantas buscas quer fazer e o programa fará as buscas dos dados nas duas árvores e mostrará ao usuário o tempo levado para fazer as buscas)
    

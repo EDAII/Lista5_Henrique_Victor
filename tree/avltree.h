@@ -25,7 +25,6 @@ private:
     void rebalance(Node *n);
     int height(Node *n);
     void setBalance(Node *n);
-    void clean(Node *node);
     Filme search_filme(Node *node, string titulo);
 
 public:

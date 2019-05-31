@@ -36,6 +36,7 @@ private:
     static QLabel *RB_ins_time;
     static QLabel *RB_searchs_time;
     static QLabel *RB_rmv_time;
+    static QLineEdit *campo_comp;
 
 private slots:
     void random_avl() { random_tree(0); }
@@ -64,15 +65,22 @@ private slots:
     void tela_titulo(int opcao);
     void data_avl();
     void data_rb();
-    void print_avl();
-    void print_rb();
     void comp_perf();
     void start_perf();
     static void *start_perf_AVL(void *t);
     static void *start_perf_RB(void *t);
     void comp_ins();
+    void start_ins();
+    static void *start_ins_AVL(void *t);
+    static void *start_ins_RB(void *t);
     void comp_rmv();
+    void start_rmv();
+    static void *start_rmv_AVL(void *t);
+    static void *start_rmv_RB(void *t);
     void comp_search();
+    void start_search();
+    static void *start_search_AVL(void *t);
+    static void *start_search_RB(void *t);
     void get_quantidade() { quantidade = campo_quantidade->text().toInt(); }
     void limpar_todos_campos();
     void mostrar_filme_encontrado(const Filme& filme);

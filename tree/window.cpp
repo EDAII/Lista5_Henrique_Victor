@@ -20,6 +20,7 @@ QLabel *Window::AVL_rmv_time = nullptr;
 QLabel *Window::RB_ins_time = nullptr;
 QLabel *Window::RB_searchs_time = nullptr;
 QLabel *Window::RB_rmv_time = nullptr;
+QLineEdit *Window::campo_comp = nullptr;
 
 Window::Window(QWidget *parent) : QWidget(parent) {
     avl = AVLTree();
@@ -793,14 +794,6 @@ void Window::data_rb() {
     loop.exec();
 }
 
-void Window::print_avl() {
-
-}
-
-void Window::print_rb() {
-
-}
-
 void Window::comp_perf() {
     new_window = new QWidget(nullptr);
     QVBoxLayout *tela = new QVBoxLayout(this);
@@ -985,15 +978,354 @@ void * Window::start_perf_RB(void *t) {
 }
 
 void Window::comp_ins() {
+    new_window = new QWidget(nullptr);
+    QVBoxLayout *tela = new QVBoxLayout(this);
+    QGridLayout *campos = new QGridLayout();
+    QGridLayout *tempos = new QGridLayout();
+    int button_size = 300;
+    int maximum_label_height = 30;
+    QFont buttonFont("Times", 20);
+    QFont labelFont("Times", 20, QFont::Bold);
 
+    QLabel *AVL_label = new QLabel("Insira a quantidade de inserções");
+    campos->addWidget(AVL_label, 0, 0);
+    AVL_label->setAlignment(Qt::AlignCenter);
+    AVL_label->setMaximumHeight(maximum_label_height);
+    AVL_label->setFont(labelFont);
+
+    campo_comp = new QLineEdit();
+    campos->addWidget(campo_comp, 1, 0);
+    campo_comp->setValidator(new QIntValidator());
+    campo_comp->setFont(labelFont);
+
+    QPushButton *start = new QPushButton("Start");
+    connect(start, &QPushButton::clicked, this, &Window::start_ins);
+    campos->addWidget(start, 2, 0);
+    start->setFixedWidth(button_size);
+    start->setFont(buttonFont);
+
+    QLabel *AVL = new QLabel("AVL");
+    tempos->addWidget(AVL, 0, 0);
+    AVL->setAlignment(Qt::AlignCenter);
+    AVL->setMaximumHeight(maximum_label_height);
+    AVL->setFont(labelFont);
+
+    AVL_ins_time = new QLabel(" ");
+    tempos->addWidget(AVL_ins_time, 1, 0);
+    AVL_ins_time->setAlignment(Qt::AlignCenter);
+    AVL_ins_time->setMaximumHeight(maximum_label_height);
+    AVL_ins_time->setFont(labelFont);
+
+    QLabel *RB = new QLabel("Red-Black");
+    tempos->addWidget(RB, 0, 1);
+    RB->setAlignment(Qt::AlignCenter);
+    RB->setMaximumHeight(maximum_label_height);
+    RB->setFont(labelFont);
+
+    RB_ins_time = new QLabel(" ");
+    tempos->addWidget(RB_ins_time, 1, 1);
+    RB_ins_time->setAlignment(Qt::AlignCenter);
+    RB_ins_time->setMaximumHeight(maximum_label_height);
+    RB_ins_time->setFont(labelFont);
+
+    tela->addLayout(campos);
+    tela->addLayout(tempos);
+
+    new_window->setLayout(tela);
+    new_window->setFixedSize(450, 250);
+    new_window->show();
+
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
+}
+
+void Window::start_ins() {
+    pthread_t avl, rb;
+    pthread_create(&avl, NULL, &Window::start_ins_AVL, NULL);
+    pthread_create(&rb, NULL, &Window::start_ins_RB, NULL);
+}
+
+void *Window::start_ins_AVL(void *t) {
+    time_t tempo;
+    AVLTree avl_perf;
+
+    tempo = clock();
+    for(int i = 0; i < campo_comp->text().toInt(); ++i) {
+        avl_perf.insert(Filme(filmes[rand() % quant_filmes],
+                   1920 + (rand() % 100),
+                   rand() % 4000000001,
+                   diretores[rand() % quant_diretores],
+                   paises[rand() % quant_paises],
+                   rand() % 181));
+    }
+    tempo = clock() - tempo;
+    AVL_ins_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    pthread_exit(NULL);
+}
+
+void *Window::start_ins_RB(void *t) {
+    time_t tempo;
+    RBTree rb_perf;
+
+    tempo = clock();
+    for(int i = 0; i < campo_comp->text().toInt(); ++i) {
+        rb_perf.insert(Filme(filmes[rand() % quant_filmes],
+                   1920 + (rand() % 100),
+                   rand() % 4000000001,
+                   diretores[rand() % quant_diretores],
+                   paises[rand() % quant_paises],
+                   rand() % 181));
+    }
+    tempo = clock() - tempo;
+    RB_ins_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    pthread_exit(NULL);
 }
 
 void Window::comp_rmv() {
+    new_window = new QWidget(nullptr);
+    QVBoxLayout *tela = new QVBoxLayout(this);
+    QGridLayout *campos = new QGridLayout();
+    QGridLayout *tempos = new QGridLayout();
+    int button_size = 300;
+    int maximum_label_height = 30;
+    QFont buttonFont("Times", 20);
+    QFont labelFont("Times", 20, QFont::Bold);
 
+    QLabel *AVL_label = new QLabel("Insira a quantidade de remoções");
+    campos->addWidget(AVL_label, 0, 0);
+    AVL_label->setAlignment(Qt::AlignCenter);
+    AVL_label->setMaximumHeight(maximum_label_height);
+    AVL_label->setFont(labelFont);
+
+    campo_comp = new QLineEdit();
+    campos->addWidget(campo_comp, 1, 0);
+    campo_comp->setValidator(new QIntValidator());
+    campo_comp->setFont(labelFont);
+
+    QPushButton *start = new QPushButton("Start");
+    connect(start, &QPushButton::clicked, this, &Window::start_rmv);
+    campos->addWidget(start, 2, 0);
+    start->setFixedWidth(button_size);
+    start->setFont(buttonFont);
+
+    QLabel *AVL = new QLabel("AVL");
+    tempos->addWidget(AVL, 0, 0);
+    AVL->setAlignment(Qt::AlignCenter);
+    AVL->setMaximumHeight(maximum_label_height);
+    AVL->setFont(labelFont);
+
+    AVL_ins_time = new QLabel(" ");
+    tempos->addWidget(AVL_ins_time, 1, 0);
+    AVL_ins_time->setAlignment(Qt::AlignCenter);
+    AVL_ins_time->setMaximumHeight(maximum_label_height);
+    AVL_ins_time->setFont(labelFont);
+
+    QLabel *RB = new QLabel("Red-Black");
+    tempos->addWidget(RB, 0, 1);
+    RB->setAlignment(Qt::AlignCenter);
+    RB->setMaximumHeight(maximum_label_height);
+    RB->setFont(labelFont);
+
+    RB_ins_time = new QLabel(" ");
+    tempos->addWidget(RB_ins_time, 1, 1);
+    RB_ins_time->setAlignment(Qt::AlignCenter);
+    RB_ins_time->setMaximumHeight(maximum_label_height);
+    RB_ins_time->setFont(labelFont);
+
+    tela->addLayout(campos);
+    tela->addLayout(tempos);
+
+    new_window->setLayout(tela);
+    new_window->setFixedSize(450, 250);
+    new_window->show();
+
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
+}
+
+void Window::start_rmv() {
+    pthread_t avl, rb;
+    pthread_create(&avl, NULL, &Window::start_rmv_AVL, NULL);
+    pthread_create(&rb, NULL, &Window::start_rmv_RB, NULL);
+}
+
+void *Window::start_rmv_AVL(void *t) {
+    time_t tempo;
+    AVLTree avl_perf;
+
+    AVL_ins_time->setText("Inserindo");
+
+    for(int i = 0; i < campo_comp->text().toInt(); ++i) {
+        avl_perf.insert(Filme(filmes[rand() % quant_filmes],
+                   1920 + (rand() % 100),
+                   rand() % 4000000001,
+                   diretores[rand() % quant_diretores],
+                   paises[rand() % quant_paises],
+                   rand() % 181));
+    }
+
+    AVL_ins_time->setText("Removendo");
+
+    tempo = clock();
+    avl_perf.clean();
+    tempo = clock() - tempo;
+
+    AVL_ins_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    pthread_exit(NULL);
+}
+
+void *Window::start_rmv_RB(void *t) {
+    time_t tempo;
+    RBTree rb_perf;
+
+    RB_ins_time->setText("Inserindo");
+
+    for(int i = 0; i < campo_comp->text().toInt(); ++i) {
+        rb_perf.insert(Filme(filmes[rand() % quant_filmes],
+                   1920 + (rand() % 100),
+                   rand() % 4000000001,
+                   diretores[rand() % quant_diretores],
+                   paises[rand() % quant_paises],
+                   rand() % 181));
+    }
+
+    RB_ins_time->setText("Removendo");
+
+    tempo = clock();
+    rb_perf.clean();
+    tempo = clock() - tempo;
+
+    RB_ins_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    pthread_exit(NULL);
 }
 
 void Window::comp_search() {
+    new_window = new QWidget(nullptr);
+    QVBoxLayout *tela = new QVBoxLayout(this);
+    QGridLayout *campos = new QGridLayout();
+    QGridLayout *tempos = new QGridLayout();
+    int button_size = 300;
+    int maximum_label_height = 30;
+    QFont buttonFont("Times", 20);
+    QFont labelFont("Times", 20, QFont::Bold);
 
+    QLabel *AVL_label = new QLabel("Insira a quantidade de buscas");
+    campos->addWidget(AVL_label, 0, 0);
+    AVL_label->setAlignment(Qt::AlignCenter);
+    AVL_label->setMaximumHeight(maximum_label_height);
+    AVL_label->setFont(labelFont);
+
+    campo_comp = new QLineEdit();
+    campos->addWidget(campo_comp, 1, 0);
+    campo_comp->setValidator(new QIntValidator());
+    campo_comp->setFont(labelFont);
+
+    QPushButton *start = new QPushButton("Start");
+    connect(start, &QPushButton::clicked, this, &Window::start_search);
+    campos->addWidget(start, 2, 0);
+    start->setFixedWidth(button_size);
+    start->setFont(buttonFont);
+
+    QLabel *AVL = new QLabel("AVL");
+    tempos->addWidget(AVL, 0, 0);
+    AVL->setAlignment(Qt::AlignCenter);
+    AVL->setMaximumHeight(maximum_label_height);
+    AVL->setFont(labelFont);
+
+    AVL_ins_time = new QLabel(" ");
+    tempos->addWidget(AVL_ins_time, 1, 0);
+    AVL_ins_time->setAlignment(Qt::AlignCenter);
+    AVL_ins_time->setMaximumHeight(maximum_label_height);
+    AVL_ins_time->setFont(labelFont);
+
+    QLabel *RB = new QLabel("Red-Black");
+    tempos->addWidget(RB, 0, 1);
+    RB->setAlignment(Qt::AlignCenter);
+    RB->setMaximumHeight(maximum_label_height);
+    RB->setFont(labelFont);
+
+    RB_ins_time = new QLabel(" ");
+    tempos->addWidget(RB_ins_time, 1, 1);
+    RB_ins_time->setAlignment(Qt::AlignCenter);
+    RB_ins_time->setMaximumHeight(maximum_label_height);
+    RB_ins_time->setFont(labelFont);
+
+    tela->addLayout(campos);
+    tela->addLayout(tempos);
+
+    new_window->setLayout(tela);
+    new_window->setFixedSize(450, 250);
+    new_window->show();
+
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
+}
+
+void Window::start_search() {
+    pthread_t avl, rb;
+    pthread_create(&avl, NULL, &Window::start_search_AVL, NULL);
+    pthread_create(&rb, NULL, &Window::start_search_RB, NULL);
+}
+
+void *Window::start_search_AVL(void *t) {
+    time_t tempo;
+    AVLTree avl_perf;
+
+    AVL_ins_time->setText("Inserindo");
+
+    for(int i = 0; i < quant_filmes; ++i) {
+        avl_perf.insert(Filme(filmes[i],
+                   1920 + (rand() % 100),
+                   rand() % 4000000001,
+                   diretores[rand() % quant_diretores],
+                   paises[rand() % quant_paises],
+                   rand() % 181));
+    }
+
+    AVL_ins_time->setText("Buscando");
+
+    tempo = clock();
+    for(int i = 0; i < campo_comp->text().toInt(); ++i)
+        avl_perf.search(filmes[rand() % quant_filmes]);
+    tempo = clock() - tempo;
+
+    AVL_ins_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    pthread_exit(NULL);
+}
+
+void *Window::start_search_RB(void *t) {
+    time_t tempo;
+    RBTree rb_perf;
+
+    RB_ins_time->setText("Inserindo");
+
+    for(int i = 0; i < quant_filmes; ++i) {
+        rb_perf.insert(Filme(filmes[i],
+                   1920 + (rand() % 100),
+                   rand() % 4000000001,
+                   diretores[rand() % quant_diretores],
+                   paises[rand() % quant_paises],
+                   rand() % 181));
+    }
+
+    RB_ins_time->setText("Buscando");
+
+    tempo = clock();
+    for(int i = 0; i < campo_comp->text().toInt(); ++i)
+        rb_perf.search(filmes[rand() % quant_filmes]);
+    tempo = clock() - tempo;
+
+    RB_ins_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    pthread_exit(NULL);
 }
 
 void Window::limpar_todos_campos() {
