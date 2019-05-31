@@ -30,6 +30,12 @@ private:
     QLabel *alert;
     QWidget *new_window;
     QListWidget *lista;
+    static QLabel *AVL_ins_time;
+    static QLabel *AVL_searchs_time;
+    static QLabel *AVL_rmv_time;
+    static QLabel *RB_ins_time;
+    static QLabel *RB_searchs_time;
+    static QLabel *RB_rmv_time;
 
 private slots:
     void random_avl() { random_tree(0); }
@@ -61,6 +67,9 @@ private slots:
     void print_avl();
     void print_rb();
     void comp_perf();
+    void start_perf();
+    static void *start_perf_AVL(void *t);
+    static void *start_perf_RB(void *t);
     void comp_ins();
     void comp_rmv();
     void comp_search();

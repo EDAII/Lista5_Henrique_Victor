@@ -8,8 +8,18 @@
 #include <QFormLayout>
 #include <QValidator>
 #include <QMessageBox>
+#include <unistd.h>
+#include <pthread.h>
+#include <time.h>
 
 using namespace std;
+
+QLabel *Window::AVL_ins_time = nullptr;
+QLabel *Window::AVL_searchs_time = nullptr;
+QLabel *Window::AVL_rmv_time = nullptr;
+QLabel *Window::RB_ins_time = nullptr;
+QLabel *Window::RB_searchs_time = nullptr;
+QLabel *Window::RB_rmv_time = nullptr;
 
 Window::Window(QWidget *parent) : QWidget(parent) {
     avl = AVLTree();
@@ -579,6 +589,11 @@ void Window::imprimir_lista(int opcao) {
     lista = new QListWidget();
     lista->setFont(font);
 
+    tela->addWidget(lista);
+    new_window->setLayout(tela);
+    new_window->setFixedSize(650, 330);
+    new_window->show();
+
     if(!opcao) {
         new_window->setWindowTitle("Lista de Filmes na AVL");
         imprimir_avl(avl.get_root());
@@ -587,11 +602,6 @@ void Window::imprimir_lista(int opcao) {
         new_window->setWindowTitle("Lista de Filmes na Red-Black");
         imprimir_rb(rb.get_root());
     }
-
-    tela->addWidget(lista);
-    new_window->setLayout(tela);
-    new_window->setFixedSize(650, 330);
-    new_window->show();
 
     QEventLoop loop;
     connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
@@ -645,7 +655,186 @@ void Window::print_rb() {
 }
 
 void Window::comp_perf() {
+    new_window = new QWidget(nullptr);
+    QVBoxLayout *tela = new QVBoxLayout(this);
+    QGridLayout *barras = new QGridLayout();
+    QGridLayout *botao = new QGridLayout();
+    QGridLayout *tempos = new QGridLayout();
+    int button_size = 300;
+    int maximum_label_height = 30;
+    QFont buttonFont("Times", 20);
+    QFont labelFont("Times", 20, QFont::Bold);
 
+    QLabel *AVL_label = new QLabel("Árvore AVL");
+    barras->addWidget(AVL_label, 0, 0);
+    AVL_label->setAlignment(Qt::AlignCenter);
+    AVL_label->setMaximumHeight(maximum_label_height);
+    AVL_label->setFont(labelFont);
+
+    QLabel *RB_label = new QLabel("Árvore Red-Black");
+    barras->addWidget(RB_label, 0, 1);
+    RB_label->setAlignment(Qt::AlignCenter);
+    RB_label->setMaximumHeight(maximum_label_height);
+    RB_label->setFont(labelFont);
+
+    QLabel *AVL_ins = new QLabel("50.000 Inserções");
+    tempos->addWidget(AVL_ins, 0, 0);
+    AVL_ins->setAlignment(Qt::AlignCenter);
+    AVL_ins->setMaximumHeight(maximum_label_height);
+    AVL_ins->setFont(labelFont);
+
+    AVL_ins_time = new QLabel(" ");
+    tempos->addWidget(AVL_ins_time, 1, 0);
+    AVL_ins_time->setAlignment(Qt::AlignCenter);
+    AVL_ins_time->setMaximumHeight(maximum_label_height);
+    AVL_ins_time->setFont(labelFont);
+
+    QLabel *AVL_searchs = new QLabel("1.000.000 Buscas");
+    tempos->addWidget(AVL_searchs, 2, 0);
+    AVL_searchs->setAlignment(Qt::AlignCenter);
+    AVL_searchs->setMaximumHeight(maximum_label_height);
+    AVL_searchs->setFont(labelFont);
+
+    AVL_searchs_time = new QLabel(" ");
+    tempos->addWidget(AVL_searchs_time, 3, 0);
+    AVL_searchs_time->setAlignment(Qt::AlignCenter);
+    AVL_searchs_time->setMaximumHeight(maximum_label_height);
+    AVL_searchs_time->setFont(labelFont);
+
+    QLabel *AVL_rmv = new QLabel("50.000 Remoções");
+    tempos->addWidget(AVL_rmv, 4, 0);
+    AVL_rmv->setAlignment(Qt::AlignCenter);
+    AVL_rmv->setMaximumHeight(maximum_label_height);
+    AVL_rmv->setFont(labelFont);
+
+    AVL_rmv_time = new QLabel(" ");
+    tempos->addWidget(AVL_rmv_time, 5, 0);
+    AVL_rmv_time->setAlignment(Qt::AlignCenter);
+    AVL_rmv_time->setMaximumHeight(maximum_label_height);
+    AVL_rmv_time->setFont(labelFont);
+
+    QLabel *RB_ins = new QLabel("50.000 Inserções");
+    tempos->addWidget(RB_ins, 0, 1);
+    RB_ins->setAlignment(Qt::AlignCenter);
+    RB_ins->setMaximumHeight(maximum_label_height);
+    RB_ins->setFont(labelFont);
+
+    RB_ins_time = new QLabel(" ");
+    tempos->addWidget(RB_ins_time, 1, 1);
+    RB_ins_time->setAlignment(Qt::AlignCenter);
+    RB_ins_time->setMaximumHeight(maximum_label_height);
+    RB_ins_time->setFont(labelFont);
+
+    QLabel *RB_searchs = new QLabel("1.000.000 Buscas");
+    tempos->addWidget(RB_searchs, 2, 1);
+    RB_searchs->setAlignment(Qt::AlignCenter);
+    RB_searchs->setMaximumHeight(maximum_label_height);
+    RB_searchs->setFont(labelFont);
+
+    RB_searchs_time = new QLabel(" ");
+    tempos->addWidget(RB_searchs_time, 3, 1);
+    RB_searchs_time->setAlignment(Qt::AlignCenter);
+    RB_searchs_time->setMaximumHeight(maximum_label_height);
+    RB_searchs_time->setFont(labelFont);
+
+    QLabel *RB_rmv = new QLabel("50.000 Remoções");
+    tempos->addWidget(RB_rmv, 4, 1);
+    RB_rmv->setAlignment(Qt::AlignCenter);
+    RB_rmv->setMaximumHeight(maximum_label_height);
+    RB_rmv->setFont(labelFont);
+
+    RB_rmv_time = new QLabel(" ");
+    tempos->addWidget(RB_rmv_time, 5, 1);
+    RB_rmv_time->setAlignment(Qt::AlignCenter);
+    RB_rmv_time->setMaximumHeight(maximum_label_height);
+    RB_rmv_time->setFont(labelFont);
+
+    QPushButton *start = new QPushButton("Start");
+    connect(start, &QPushButton::clicked, this, &Window::start_perf);
+    botao->addWidget(start, 0, 0);
+    start->setFixedWidth(button_size);
+    start->setFont(buttonFont);
+
+    tela->addLayout(barras);
+    tela->addLayout(botao);
+    tela->addLayout(tempos);
+
+    new_window->setLayout(tela);
+    new_window->setFixedSize(650, 450);
+    new_window->show();
+
+    QEventLoop loop;
+    connect(this, SIGNAL(destroyed()), & loop, SLOT(quit()));
+    loop.exec();
+}
+
+void Window::start_perf() {
+    pthread_t avl, rb;
+    pthread_create(&avl, NULL, &Window::start_perf_AVL, NULL);
+    pthread_create(&rb, NULL, &Window::start_perf_RB, NULL);
+}
+
+void * Window::start_perf_AVL(void *t) {
+    time_t tempo;
+    AVLTree avl_perf;
+
+    tempo = clock();
+    for(int i = 0; i < 50000; ++i) {
+        avl_perf.insert(Filme(filmes[rand() % quant_filmes],
+                   1920 + (rand() % 100),
+                   rand() % 4000000001,
+                   diretores[rand() % quant_diretores],
+                   paises[rand() % quant_paises],
+                   rand() % 181));
+    }
+    tempo = clock() - tempo;
+    AVL_ins_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    tempo = clock();
+    for(int i = 0; i < 1000000; ++i) {
+        avl_perf.search(filmes[rand() % quant_filmes]);
+        //progressAVL->setValue(i+1);
+    }
+    tempo = clock() - tempo;
+    AVL_searchs_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    tempo = clock();
+    avl_perf.clean();
+    tempo = clock() - tempo;
+    AVL_rmv_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    pthread_exit(NULL);
+}
+
+void * Window::start_perf_RB(void *t) {
+    time_t tempo;
+    RBTree rb_perf;
+
+    tempo = clock();
+    for(int i = 0; i < 50000; ++i) {
+        rb_perf.insert(Filme(filmes[rand() % quant_filmes],
+                   1920 + (rand() % 100),
+                   rand() % 4000000001,
+                   diretores[rand() % quant_diretores],
+                   paises[rand() % quant_paises],
+                   rand() % 181));
+    }
+    tempo = clock() - tempo;
+    RB_ins_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    tempo = clock();
+    for(int i = 0; i < 1000000; ++i) {
+        rb_perf.search(filmes[rand() % quant_filmes]);
+    }
+    tempo = clock() - tempo;
+    RB_searchs_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    tempo = clock();
+    rb_perf.clean();
+    tempo = clock() - tempo;
+    RB_rmv_time->setText(QString::number((float)tempo/CLOCKS_PER_SEC));
+
+    pthread_exit(NULL);
 }
 
 void Window::comp_ins() {
