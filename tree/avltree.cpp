@@ -21,6 +21,7 @@ void AVLTree::insert(const Filme& info){
             break;
         }
     }
+    _size++;
 }
 
 void AVLTree::deleteKey(const Filme& delKey){
@@ -49,6 +50,7 @@ void AVLTree::deleteKey(const Filme& delKey){
             rebalance(parent);
         }
     }
+    _size--;
 }
 
 AVLTree::Node* AVLTree::rotateLeft(Node *a){
@@ -67,8 +69,7 @@ AVLTree::Node* AVLTree::rotateLeft(Node *a){
 
     setBalance(a);
     setBalance(b);
-    rotate_left++;
-    printf("%d\n", rotate_left);
+    _rotate_left++;
     return b;
 }
 
@@ -88,6 +89,7 @@ AVLTree::Node* AVLTree::rotateRight(Node *a){
 
     setBalance(a);
     setBalance(b);
+    _rotate_right++;
     return b;
 }
 
@@ -113,6 +115,8 @@ void AVLTree::rebalance(Node *n){
         rebalance(n->parent);
     else
         root = n;
+    
+    _rebalance++;
 }
 
 int AVLTree::height(Node *n){
@@ -138,6 +142,10 @@ Filme AVLTree::search(const char* titulo) {
 void AVLTree::clean(Node *node) {
     while(root != nullptr)
         deleteKey(root->info);
+        _rotate_left = 0;
+        _rotate_right = 0;
+        _rebalance = 0;
+        _size = 0;
 }
 
 Filme AVLTree::search_filme(Node *node, string titulo) {

@@ -12,6 +12,7 @@ void RBTree::rotate_left(Node *G, Node *P, Node *C) {
 
     if (P->right)
         P->right->parent = P;
+    _rotate_left++;
 }
 
 void RBTree::rotate_right(Node *G, Node *P, Node *C) {
@@ -26,11 +27,13 @@ void RBTree::rotate_right(Node *G, Node *P, Node *C) {
 
     if (P->left)
         P->left->parent = P;
+    _rotate_right++;
 }
 
 void RBTree::insert(const Filme& info) {
     auto node = insert(&root, nullptr, info);
     restore_properties(node);
+    _size++;
 }
 
 RBTree::Node * RBTree::insert(Node **node, Node *parent, const Filme& info) {
@@ -145,11 +148,14 @@ void RBTree::erase(Node *N) {
     }
 
     delete N;
+    _size--;
 }
 
 void RBTree::rebalancing(Node *P, Node *S, Node *N) {
     if (P == nullptr)
         return;
+
+    _rebalance++;
 
     if (S and S->color == Node::RED) {
         P->color = Node::RED;
@@ -216,6 +222,10 @@ void RBTree::rebalancing(Node *P, Node *S, Node *N) {
 
 void RBTree::clean() {
     clean(root);
+    _rotate_left = 0;
+    _rotate_right = 0;
+    _rebalance = 0;
+    _size = 0;
 }
 
 void RBTree::clean(Node *node) {

@@ -10,6 +10,12 @@ public:
         enum { RED, BLACK } color;
         Node *left, *right, *parent;
     };
+
+    int _rotate_left = 0;
+    int _rotate_right = 0;
+    int _rebalance = 0;
+    int _size = 0;
+
 private:
     Node *root;
 

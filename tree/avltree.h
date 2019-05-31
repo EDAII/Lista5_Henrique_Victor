@@ -11,7 +11,10 @@ public:
         Node *left, *right, *parent;
     };
 
-    int rotate_left = 0;
+    int _rotate_left = 0;
+    int _rotate_right = 0;
+    int _rebalance = 0;
+    int _size = 0;
 
 private:
     Node *root;
