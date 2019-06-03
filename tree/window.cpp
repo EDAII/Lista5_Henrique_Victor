@@ -982,7 +982,7 @@ void Window::comp_ins() {
     QVBoxLayout *tela = new QVBoxLayout(this);
     QGridLayout *campos = new QGridLayout();
     QGridLayout *tempos = new QGridLayout();
-    int button_size = 300;
+    int button_size = 430;
     int maximum_label_height = 30;
     QFont buttonFont("Times", 20);
     QFont labelFont("Times", 20, QFont::Bold);
@@ -1089,7 +1089,7 @@ void Window::comp_rmv() {
     QVBoxLayout *tela = new QVBoxLayout(this);
     QGridLayout *campos = new QGridLayout();
     QGridLayout *tempos = new QGridLayout();
-    int button_size = 300;
+    int button_size = 430;
     int maximum_label_height = 30;
     QFont buttonFont("Times", 20);
     QFont labelFont("Times", 20, QFont::Bold);
@@ -1210,7 +1210,7 @@ void Window::comp_search() {
     QVBoxLayout *tela = new QVBoxLayout(this);
     QGridLayout *campos = new QGridLayout();
     QGridLayout *tempos = new QGridLayout();
-    int button_size = 300;
+    int button_size = 430;
     int maximum_label_height = 30;
     QFont buttonFont("Times", 20);
     QFont labelFont("Times", 20, QFont::Bold);

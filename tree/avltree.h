@@ -18,10 +18,10 @@ public:
 
 private:
     Node *root;
-    Node* rotateLeft(Node *a);
-    Node* rotateRight(Node *a);
-    Node* rotateLeftThenRight(Node *n);
-    Node* rotateRightThenLeft(Node *n);
+    Node* rotate_left(Node *a);
+    Node* rotate_right(Node *a);
+    Node* rotate_left_right(Node *n);
+    Node* rotate_right_left(Node *n);
     void rebalance(Node *n);
     int height(Node *n);
     void setBalance(Node *n);

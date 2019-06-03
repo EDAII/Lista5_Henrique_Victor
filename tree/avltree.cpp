@@ -54,7 +54,7 @@ void AVLTree::deleteKey(const Filme& delKey){
     _size--;
 }
 
-AVLTree::Node* AVLTree::rotateLeft(Node *a){
+AVLTree::Node* AVLTree::rotate_left(Node *a){
     Node *b = a->right;
     b->parent = a->parent;
     a->right = b->left;
@@ -74,7 +74,7 @@ AVLTree::Node* AVLTree::rotateLeft(Node *a){
     return b;
 }
 
-AVLTree::Node* AVLTree::rotateRight(Node *a){
+AVLTree::Node* AVLTree::rotate_right(Node *a){
     Node *b = a->left;
     b->parent = a->parent;
     a->left = b->right;
@@ -94,23 +94,23 @@ AVLTree::Node* AVLTree::rotateRight(Node *a){
     return b;
 }
 
-AVLTree::Node* AVLTree::rotateLeftThenRight(Node *n){
-    n->left = rotateLeft(n->left);
-    return rotateRight(n);
+AVLTree::Node* AVLTree::rotate_left_right(Node *n){
+    n->left = rotate_left(n->left);
+    return rotate_right(n);
 }
 
-AVLTree::Node* AVLTree::rotateRightThenLeft(Node *n){
-    n->right = rotateRight(n->right);
-    return rotateLeft(n);
+AVLTree::Node* AVLTree::rotate_right_left(Node *n){
+    n->right = rotate_right(n->right);
+    return rotate_left(n);
 }
 
 void AVLTree::rebalance(Node *n){
     setBalance(n);
 
     if (n->balance == -2)
-        n = height(n->left->left) >= height(n->left->right) ? rotateRight(n) : rotateLeftThenRight(n);
+        n = height(n->left->left) >= height(n->left->right) ? rotate_right(n) : rotate_left_right(n);
     else if (n->balance == 2)
-       n = height(n->right->right) >= height(n->right->left) ? rotateLeft(n) : rotateRightThenLeft(n);
+       n = height(n->right->right) >= height(n->right->left) ? rotate_left(n) : rotate_right_left(n);
 
     if (n->parent != nullptr)
         rebalance(n->parent);
